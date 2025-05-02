@@ -98,54 +98,54 @@ export default function Home() {
   }, [userInput, showAnswer]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-indigo-950">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-indigo-800 dark:text-indigo-300 mb-3">
+          <h1 className="text-4xl font-bold text-emerald-700 mb-3">
             Logical Fallacy Trainer
           </h1>
-          <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="text-slate-600 max-w-2xl mx-auto">
             Improve your critical thinking skills by identifying logical fallacies in arguments.
             Read the statement and identify the fallacy type in the input field.
           </p>
-          <div className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-            <p>Keyboard shortcuts: <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">Enter</kbd> to check, <kbd className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">Space</kbd> for next</p>
+          <div className="mt-4 text-sm text-slate-500">
+            <p>Keyboard shortcuts: <kbd className="px-2 py-1 bg-slate-100 rounded border border-slate-200">Enter</kbd> to check, <kbd className="px-2 py-1 bg-slate-100 rounded border border-slate-200">Space</kbd> for next</p>
           </div>
         </header>
         
         {currentFallacy && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 md:p-8">
+          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+                <h2 className="text-xl font-semibold text-slate-700">
                   Identify the Fallacy
                 </h2>
                 <div className="flex items-center gap-4">
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                  <div className="text-sm text-slate-500">
                     {remainingFallacies.length === 0 
                       ? 'All fallacies seen!' 
                       : `${remainingFallacies.length}/${fallacyData.length} remaining`}
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">
+                  <div className="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">
                     Score: {score}/{totalAttempts}
                   </div>
                 </div>
               </div>
 
-              <div className="bg-indigo-50 dark:bg-slate-700 p-5 rounded-xl border-l-4 border-indigo-500 mb-6">
-                <p className="text-slate-800 dark:text-slate-200 italic text-lg">
+              <div className="bg-blue-50 p-5 rounded-xl border-l-4 border-blue-400 mb-6">
+                <p className="text-slate-700 italic text-lg">
                   "{currentFallacy.text}"
                 </p>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="fallacy-input" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label htmlFor="fallacy-input" className="block text-sm font-medium text-slate-700 mb-2">
                     What type of fallacy is this?
                   </label>
                   <textarea
                     id="fallacy-input"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-white text-slate-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none shadow-sm"
                     rows={3}
                     placeholder="Enter your answer here..."
                     value={userInput}
@@ -158,7 +158,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-between">
                   {!showAnswer ? (
                     <button
-                      className="px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors flex items-center justify-center"
+                      className="px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors flex items-center justify-center shadow-sm"
                       onClick={handleNext}
                       disabled={!userInput.trim()}
                     >
@@ -166,7 +166,7 @@ export default function Home() {
                     </button>
                   ) : (
                     <button
-                      className="px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors flex items-center justify-center"
+                      className="px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors flex items-center justify-center shadow-sm"
                       onClick={loadNextFallacy}
                     >
                       <span>Next Fallacy</span>
@@ -174,7 +174,7 @@ export default function Home() {
                   )}
                   {!showAnswer && (
                     <button
-                      className="px-5 py-3 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-medium transition-colors"
+                      className="px-5 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors border border-slate-200 shadow-sm"
                       onClick={handleSkip}
                     >
                       Skip
@@ -187,51 +187,51 @@ export default function Home() {
             {showAnswer && (
               <div className={`rounded-xl p-6 border space-y-4 ${
                 isCorrect 
-                  ? "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800" 
-                  : "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800"
+                  ? "bg-green-50 border-green-100" 
+                  : "bg-amber-50 border-amber-100"
               }`}>
                 <div className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
                     isCorrect 
-                      ? "bg-green-100 dark:bg-green-800" 
-                      : "bg-red-100 dark:bg-red-800"
+                      ? "bg-green-100" 
+                      : "bg-amber-100"
                   }`}>
                     <span className={`font-bold ${
                       isCorrect 
-                        ? "text-green-600 dark:text-green-300" 
-                        : "text-red-600 dark:text-red-300"
+                        ? "text-green-600" 
+                        : "text-amber-600"
                     }`}>
                       {isCorrect ? "✓" : "✗"}
                     </span>
                   </div>
                   <h3 className={`text-lg font-semibold ${
                     isCorrect 
-                      ? "text-green-700 dark:text-green-300" 
-                      : "text-red-700 dark:text-red-300"
+                      ? "text-green-700" 
+                      : "text-amber-700"
                   }`}>
                     {isCorrect ? "Correct!" : "Not quite right"} - It's a {currentFallacy.fallacy_type}
                   </h3>
                 </div>
                 
                 <div className="pl-11 space-y-4">
-                  <p className="text-slate-700 dark:text-slate-300">
+                  <p className="text-slate-700">
                     {currentFallacy.explanation}
                   </p>
                   
                   <div>
-                    <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
+                    <h4 className="text-sm font-medium text-slate-600 mb-1">
                       Corrected Argument:
                     </h4>
-                    <p className="text-slate-800 dark:text-slate-200">
+                    <p className="text-slate-700">
                       {currentFallacy.corrected}
                     </p>
                   </div>
                   
                   <div className="pt-2">
-                    <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
+                    <h4 className="text-sm font-medium text-slate-600 mb-1">
                       Your Answer:
                     </h4>
-                    <p className="text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 p-3 rounded border border-slate-200 dark:border-slate-700">
+                    <p className="text-slate-700 bg-white p-3 rounded border border-slate-200">
                       {userInput}
                     </p>
                   </div>
@@ -241,7 +241,7 @@ export default function Home() {
           </div>
         )}
         
-        <footer className="text-center mt-12 text-sm text-slate-500 dark:text-slate-400">
+        <footer className="text-center mt-12 text-sm text-slate-500">
           <p>© 2025 Logical Fallacy Trainer - Improve your critical thinking</p>
         </footer>
       </div>
