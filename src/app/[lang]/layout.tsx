@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import { ReactNode } from 'react';
+import { Locale, i18n } from '@/i18n/settings';
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,18 +13,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Logical Fallacy Trainer - Improve Critical Thinking",
-  description: "Train yourself to recognize logical fallacies and reasoning errors with this interactive tool.",
-};
+// Generate static params for all supported languages
+export async function generateStaticParams() {
+  return i18n.locales.map((lang) => ({ lang }));
+}
 
-export default function RootLayout({
+export default function LocaleLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params: { lang },
+}: {
+  children: ReactNode;
+  params: { lang: Locale };
+}) {
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

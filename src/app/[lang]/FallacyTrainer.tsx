@@ -1,0 +1,161 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import fallacyData from '../data.json';
+
+// Import component files
+import Header from '../components/Header';
+import FallacyQuestion from '../components/FallacyQuestion';
+import UserInput from '../components/UserInput';
+import FallacyControls from '../components/FallacyControls';
+import StatusBar from '../components/StatusBar';
+import FallacyResult from '../components/FallacyResult';
+import Footer from '../components/Footer';
+
+// Main component
+export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; lang: string }) {
+  const [currentFallacy, setCurrentFallacy] = useState<any>(null);
+  const [userInput, setUserInput] = useState('');
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [score, setScore] = useState(0);
+  const [totalAttempts, setTotalAttempts] = useState(0);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [remainingFallacies, setRemainingFallacies] = useState<any[]>([]);
+
+  // Get a random fallacy without repetition until all are seen
+  const getNextFallacy = () => {
+    // If we've used all fallacies, reset the pool
+    if (remainingFallacies.length === 0) {
+      setRemainingFallacies([...fallacyData]);
+      return getNextFallacy();
+    }
+    
+    const randomIndex = Math.floor(Math.random() * remainingFallacies.length);
+    const selected = remainingFallacies[randomIndex];
+    
+    // Remove the selected fallacy from the pool
+    setRemainingFallacies(prev => 
+      prev.filter((_, index) => index !== randomIndex)
+    );
+    
+    return selected;
+  };
+
+  // Initialize or load next fallacy
+  const loadNextFallacy = () => {
+    setCurrentFallacy(getNextFallacy());
+    setUserInput('');
+    setShowAnswer(false);
+    setIsCorrect(null);
+  };
+
+  // Check if the user's answer is correct (case-insensitive comparison)
+  const checkAnswer = (input: string, fallacyType: string) => {
+    return input.trim().toLowerCase() === fallacyType.toLowerCase();
+  };
+
+  // Handle Next button click
+  const handleNext = () => {
+    if (userInput.trim()) {
+      setTotalAttempts(totalAttempts + 1);
+      
+      const correct = checkAnswer(userInput, currentFallacy.fallacy_type);
+      setIsCorrect(correct);
+      
+      if (correct) {
+        setScore(score + 1);
+      }
+      
+      setShowAnswer(true);
+    }
+  };
+
+  // Handle Skip button click
+  const handleSkip = () => {
+    loadNextFallacy();
+  };
+
+  // Initialize on component mount
+  useEffect(() => {
+    // Start with all fallacies in the pool
+    setRemainingFallacies([...fallacyData]);
+  }, []);
+
+  // Load first fallacy once remaining fallacies are set
+  useEffect(() => {
+    if (remainingFallacies.length > 0 && !currentFallacy) {
+      loadNextFallacy();
+    }
+  }, [remainingFallacies, currentFallacy]);
+
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Enter to submit when not showing answer
+      if (e.key === 'Enter' && userInput.trim() && !showAnswer) {
+        handleNext();
+      }
+      // Space to proceed to next fallacy when showing answer
+      else if (e.key === ' ' && showAnswer) {
+        loadNextFallacy();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [userInput, showAnswer]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <Header dictionary={dictionary} />
+        
+        {currentFallacy && (
+          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
+            <div className="mb-8">
+              <StatusBar 
+                remainingFallacies={remainingFallacies}
+                score={score}
+                totalAttempts={totalAttempts}
+                dictionary={dictionary}
+              />
+
+              <FallacyQuestion fallacy={currentFallacy} />
+
+              <div className="space-y-6">
+                <UserInput 
+                  userInput={userInput}
+                  setUserInput={setUserInput}
+                  showAnswer={showAnswer}
+                  dictionary={dictionary}
+                />
+
+                <FallacyControls 
+                  showAnswer={showAnswer}
+                  handleNext={handleNext}
+                  loadNextFallacy={loadNextFallacy}
+                  handleSkip={handleSkip}
+                  userInput={userInput}
+                  dictionary={dictionary}
+                />
+              </div>
+            </div>
+
+            {showAnswer && (
+              <FallacyResult 
+                isCorrect={isCorrect}
+                currentFallacy={currentFallacy}
+                userInput={userInput}
+                dictionary={dictionary}
+              />
+            )}
+          </div>
+        )}
+        
+        <Footer dictionary={dictionary} />
+      </div>
+    </div>
+  );
+}
