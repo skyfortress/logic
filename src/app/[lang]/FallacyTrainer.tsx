@@ -140,10 +140,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     };
   }, [userInput, showAnswer, isLoading, handleNext, loadNextFallacy]);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <Header dictionary={dictionary} />
+  return (<>
+        <Header dictionary={dictionary} lang={lang} />
         
         {currentFallacy && (
           <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
@@ -191,7 +189,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         )}
         
         <Footer dictionary={dictionary} />
-      </div>
-    </div>
+      </>
   );
 }

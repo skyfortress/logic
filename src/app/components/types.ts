@@ -25,4 +25,10 @@ export interface Dictionary {
   yourAnswer: string;
   copyright: string;
   evaluating: string;
+  fallaciesList?: {
+    title: string;
+    description: string;
+    example: string;
+    explanation: string;
+  };
 }

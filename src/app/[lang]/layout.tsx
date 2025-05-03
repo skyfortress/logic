@@ -30,7 +30,11 @@ export default function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
+          <div className="container mx-auto px-4 py-12 max-w-4xl">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

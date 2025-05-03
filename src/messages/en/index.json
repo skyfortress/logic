@@ -22,5 +22,12 @@
   "correctedArgument": "Corrected Argument:",
   "yourAnswer": "Your Answer:",
   "copyright": "© 2025 Logical Fallacy Trainer - Improve your critical thinking",
-  "evaluating": "Thinking"
+  "evaluating": "Thinking",
+  "fallaciesList": {
+    "title": "Logical Fallacies",
+    "description": "A comprehensive list of logical fallacies and their descriptions.",
+    "example": "Example:",
+    "explanation": "Explanation:"
+  },
+  "backToTrainer": "Back to Trainer"
 }

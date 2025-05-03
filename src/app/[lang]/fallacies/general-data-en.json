@@ -1,0 +1,143 @@
+[
+    {
+      "name": "Straw Man",
+      "description": "Misrepresenting someone's argument to make it easier to attack.",
+      "example": "Person A: We should have better school lunches. Person B: My opponent wants to ban all snacks.",
+      "correctedExample": "Person B: I agree we need better school lunches. Let’s discuss how to improve them while keeping some snack options.",
+      "explanation": "Person B twisted Person A's argument into something extreme and easier to criticize."
+    },
+    {
+      "name": "Ad Hominem",
+      "description": "Attacking the person instead of their argument.",
+      "example": "Don't listen to her ideas about climate change—she’s not even a scientist.",
+      "correctedExample": "Her background may not be scientific, but we can still evaluate her argument on its own.",
+      "explanation": "The speaker ignores the actual argument and attacks the person instead."
+    },
+    {
+      "name": "Appeal to Popularity",
+      "description": "Saying something is true just because many people believe it.",
+      "example": "Everyone says this diet works, so it must be the best.",
+      "correctedExample": "We should look at scientific studies to see if the diet is effective.",
+      "explanation": "Popularity doesn’t guarantee truth or effectiveness."
+    },
+    {
+      "name": "False Dilemma",
+      "description": "Presenting only two options when more exist.",
+      "example": "You’re either with us or against us.",
+      "correctedExample": "You can support parts of our idea without agreeing with everything.",
+      "explanation": "This limits complex situations to just two choices unfairly."
+    },
+    {
+      "name": "Slippery Slope",
+      "description": "Claiming one small step will lead to a terrible outcome.",
+      "example": "If we allow kids to choose dinner, soon they'll make all the decisions at home.",
+      "correctedExample": "Letting kids choose dinner doesn’t mean they’ll control everything else.",
+      "explanation": "The argument exaggerates the consequences without proof."
+    },
+    {
+      "name": "Circular Reasoning",
+      "description": "Using the conclusion as a premise.",
+      "example": "I’m trustworthy because I always tell the truth.",
+      "correctedExample": "You can trust me because I’ve always been honest in past situations.",
+      "explanation": "The reasoning goes in a loop without offering real evidence."
+    },
+    {
+      "name": "Hasty Generalization",
+      "description": "Making a broad claim based on little evidence.",
+      "example": "I met two rude tourists from that country—everyone from there must be rude.",
+      "correctedExample": "It’s unfair to judge a whole country based on two people.",
+      "explanation": "The argument generalizes from a very small sample."
+    },
+    {
+      "name": "Post Hoc",
+      "description": "Assuming one event caused another just because it happened first.",
+      "example": "I wore my lucky socks and we won—must be the socks!",
+      "correctedExample": "Winning was probably due to skill, not my socks.",
+      "explanation": "Correlation doesn't mean causation."
+    },
+    {
+      "name": "Appeal to Emotion",
+      "description": "Using emotions instead of facts to make an argument.",
+      "example": "If you don’t donate, these puppies will suffer.",
+      "correctedExample": "Your donation helps animals get care. Here’s how it works.",
+      "explanation": "The argument tries to persuade with guilt instead of reasons."
+    },
+    {
+      "name": "Red Herring",
+      "description": "Introducing something unrelated to distract from the topic.",
+      "example": "Why worry about pollution when we haven’t solved poverty yet?",
+      "correctedExample": "We can care about both pollution and poverty. Let’s discuss this issue now.",
+      "explanation": "The speaker changes the subject to avoid the original issue."
+    },
+    {
+      "name": "Bandwagon",
+      "description": "Arguing something is right because everyone is doing it.",
+      "example": "Everyone is investing in this app—you should too!",
+      "correctedExample": "Let’s evaluate whether this app is a smart investment.",
+      "explanation": "The argument relies on group behavior, not reason."
+    },
+    {
+      "name": "Appeal to Authority",
+      "description": "Believing a claim is true just because an authority says so.",
+      "example": "This celebrity says it works, so it must be good.",
+      "correctedExample": "Let’s look at evidence or expert research instead of just taking their word for it.",
+      "explanation": "The person may not be qualified to speak on the topic."
+    },
+    {
+      "name": "Begging the Question",
+      "description": "Assuming what you're trying to prove.",
+      "example": "Stealing is wrong because it’s illegal.",
+      "correctedExample": "Stealing is wrong because it harms others and takes away what isn't yours.",
+      "explanation": "The argument assumes the conclusion instead of proving it."
+    },
+    {
+      "name": "False Cause",
+      "description": "Assuming a wrong cause-effect relationship.",
+      "example": "Sales dropped after the new logo—we need to change it back.",
+      "correctedExample": "Let’s examine other factors that may have affected sales.",
+      "explanation": "Timing alone doesn’t prove the logo caused the problem."
+    },
+    {
+      "name": "No True Scotsman",
+      "description": "Changing a definition to protect a generalization from criticism.",
+      "example": "No real artist would sell their work. Oh, she did? Then she’s not a real artist.",
+      "correctedExample": "Let’s not exclude people just because they don’t fit a narrow view.",
+      "explanation": "The claim redefines 'real artist' to ignore counterexamples."
+    },
+    {
+      "name": "Loaded Question",
+      "description": "Asking a question with an assumption built in.",
+      "example": "Why are you always so lazy at work?",
+      "correctedExample": "How do you manage your workload throughout the day?",
+      "explanation": "The question assumes laziness without evidence."
+    },
+    {
+      "name": "Tu Quoque",
+      "description": "Avoiding criticism by pointing out the critic’s behavior.",
+      "example": "You smoke too, so don’t tell me to quit.",
+      "correctedExample": "Even if I smoke, that doesn’t mean smoking is safe.",
+      "explanation": "It shifts focus from the argument to the person."
+    },
+    {
+      "name": "Appeal to Nature",
+      "description": "Assuming something is good because it’s natural.",
+      "example": "It’s all-natural, so it must be healthy.",
+      "correctedExample": "Let’s check if it’s actually healthy, not just ‘natural’.",
+      "explanation": "Natural things can be harmful too."
+    },
+    {
+      "name": "Middle Ground",
+      "description": "Assuming the compromise between two sides is always right.",
+      "example": "One person says 2+2=4, another says it’s 6—so it must be 5.",
+      "correctedExample": "Let’s check the math instead of averaging opinions.",
+      "explanation": "The truth isn’t always between two opinions."
+    },
+    {
+      "name": "False Analogy",
+      "description": "Comparing two things that aren’t truly alike.",
+      "example": "Employees are like nails. Just hit them to make them work.",
+      "correctedExample": "Employees are people and should be motivated with respect, not force.",
+      "explanation": "The comparison is misleading and ignores key differences."
+    }
+  ]
+  
