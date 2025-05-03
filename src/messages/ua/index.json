@@ -9,7 +9,6 @@
   "spaceAction": "для наступної",
   "identifyFallacy": "Визначте хибу",
   "allSeen": "Усі хиби переглянуто!",
-  "remaining": "{count}/{total} залишилось",
   "score": "Рахунок: {score}/{total}",
   "fallacyQuestion": "Що не так з цим міркуванням?",
   "inputPlaceholder": "Поясніть, що саме неправильно у цьому твердженні...",

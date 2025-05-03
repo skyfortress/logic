@@ -24,8 +24,3 @@ export interface Fallacy {
   corrected: string;
   id: number;
 }
-
-export interface FallacyResponse {
-  fallacy: Fallacy | null;
-  remaining: number;
-}

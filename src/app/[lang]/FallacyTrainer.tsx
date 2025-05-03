@@ -19,7 +19,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   const [score, setScore] = useState(0);
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [remainingCount, setRemainingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
   const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
@@ -41,7 +40,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       if (data.fallacy) {
         setCurrentFallacy(data.fallacy);
         setSeenFallacyIds(prev => [...prev, data.fallacy?.id.toString() || '']);
-        setRemainingCount(data.remaining);
       } else if (seenFallacyIds.length > 0) {
         // Reset seen fallacies instead of immediately recursing
         setSeenFallacyIds([]);
@@ -147,8 +145,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
           <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
             <div className="mb-8">
               <StatusBar 
-                remainingFallacies={[]}
-                remainingCount={remainingCount}
                 score={score}
                 totalAttempts={totalAttempts}
                 dictionary={dictionary}

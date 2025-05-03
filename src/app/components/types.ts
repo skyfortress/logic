@@ -1,5 +1,3 @@
-import { EvaluationResponse } from '../api/types';
-
 export interface Dictionary {
   title: string;
   subtitle: string;
@@ -11,7 +9,6 @@ export interface Dictionary {
   spaceAction: string;
   identifyFallacy: string;
   allSeen: string;
-  remaining: string;
   score: string;
   fallacyQuestion: string;
   inputPlaceholder: string;

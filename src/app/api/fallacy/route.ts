@@ -5,7 +5,6 @@ import { Fallacy } from '../types';
 
 export interface FallacyResponse {
   fallacy: Fallacy | null;
-  remaining: number;
 }
 
 export async function GET(request: NextRequest) {
@@ -30,6 +29,5 @@ export async function GET(request: NextRequest) {
       ...selectedFallacy,
       id: originalIndex
     },
-    remaining: availableFallacies.length - 1
   });
 }

@@ -9,7 +9,6 @@
   "spaceAction": "for next",
   "identifyFallacy": "Identify the Fallacy",
   "allSeen": "All fallacies seen!",
-  "remaining": "{count}/{total} remaining",
   "score": "Score: {score}/{total}",
   "fallacyQuestion": "What's wrong with this reasoning?",
   "inputPlaceholder": "Explain what's flawed about this statement...",
