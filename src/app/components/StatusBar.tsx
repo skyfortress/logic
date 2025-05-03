@@ -1,22 +1,21 @@
 import React from 'react';
-import fallacyData from '../data.json';
+import { Dictionary } from './types';
 
-// Function to format strings with placeholders
 const formatString = (str: string, values: Record<string, string | number>) => {
   return str.replace(/{(\w+)}/g, (_, key) => String(values[key] || ''));
 };
 
-// StatusBar component - shows score and remaining fallacies
 const StatusBar = ({ 
-  remainingFallacies, 
+  remainingCount,
   score, 
   totalAttempts, 
   dictionary 
 }: { 
-  remainingFallacies: any[]; 
+  remainingCount: number;
   score: number;
   totalAttempts: number;
-  dictionary: any;
+  dictionary: Dictionary;
+  remainingFallacies: unknown[]; // Keep for backward compatibility but don't use
 }) => (
   <div className="flex items-center justify-between mb-4">
     <h2 className="text-xl font-semibold text-slate-700">
@@ -24,9 +23,9 @@ const StatusBar = ({
     </h2>
     <div className="flex items-center gap-4">
       <div className="text-sm text-slate-500">
-        {remainingFallacies.length === 0 
+        {remainingCount === 0 
           ? dictionary.allSeen
-          : formatString(dictionary.remaining, { count: remainingFallacies.length, total: fallacyData.length })}
+          : formatString(dictionary.remaining, { count: remainingCount })}
       </div>
       <div className="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">
         {formatString(dictionary.score, { score, total: totalAttempts })}

@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import fallacyData from '../data.json';
-import { EvaluationResponse } from '../api/types';
+import { useState, useEffect, useCallback } from 'react';
+import { EvaluationResponse, Fallacy, FallacyResponse } from '../api/types';
+import type { Dictionary } from '../components/types';
 
-// Import component files
 import Header from '../components/Header';
 import FallacyQuestion from '../components/FallacyQuestion';
 import UserInput from '../components/UserInput';
@@ -13,48 +12,61 @@ import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 
-// Main component
-export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; lang: string }) {
-  const [currentFallacy, setCurrentFallacy] = useState<any>(null);
+export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
+  const [currentFallacy, setCurrentFallacy] = useState<Fallacy | null>(null);
   const [userInput, setUserInput] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [score, setScore] = useState(0);
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [remainingFallacies, setRemainingFallacies] = useState<any[]>([]);
+  const [remainingCount, setRemainingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
+  const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
 
-  // Get a random fallacy without repetition until all are seen
-  const getNextFallacy = () => {
-    // If we've used all fallacies, reset the pool
-    if (remainingFallacies.length === 0) {
-      setRemainingFallacies([...fallacyData]);
-      return getNextFallacy();
+  const fetchNextFallacy = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const excludeParam = seenFallacyIds.length > 0 ? `exclude=${seenFallacyIds.join(',')}` : '';
+      const langParam = `lang=${lang}`;
+      const queryString = [excludeParam, langParam].filter(Boolean).join('&');
+      const response = await fetch(`/api/fallacy${queryString ? `?${queryString}` : ''}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch fallacy');
+      }
+      
+      const data: FallacyResponse = await response.json();
+      
+      if (data.fallacy) {
+        setCurrentFallacy(data.fallacy);
+        setSeenFallacyIds(prev => [...prev, data.fallacy?.id.toString() || '']);
+        setRemainingCount(data.remaining);
+      } else if (seenFallacyIds.length > 0) {
+        // Reset seen fallacies instead of immediately recursing
+        setSeenFallacyIds([]);
+        // Use setTimeout to prevent immediate recursion
+        fetchNextFallacy();
+      } else {
+        // If we have no fallacy and no seen fallacies, we might be out of fallacies
+        console.error('No fallacies available');
+      }
+    } catch (error) {
+      console.error('Error fetching fallacy:', error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    const randomIndex = Math.floor(Math.random() * remainingFallacies.length);
-    const selected = remainingFallacies[randomIndex];
-    
-    // Remove the selected fallacy from the pool
-    setRemainingFallacies(prev => 
-      prev.filter((_, index) => index !== randomIndex)
-    );
-    
-    return selected;
-  };
+  }, [seenFallacyIds, lang]);
 
-  // Initialize or load next fallacy
-  const loadNextFallacy = () => {
-    setCurrentFallacy(getNextFallacy());
+  const loadNextFallacy = useCallback(() => {
+    fetchNextFallacy();
     setUserInput('');
     setShowAnswer(false);
     setIsCorrect(null);
     setEvaluation(null);
-  };
+  }, [fetchNextFallacy]);
 
-  // Evaluate the user's answer using the API
-  const evaluateAnswer = async (input: string, fallacy: any) => {
+  const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy) => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/evaluate', {
@@ -64,10 +76,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
         },
         body: JSON.stringify({
           userInput: input,
-          correctAnswer: fallacy.fallacy_type,
-          fallacyDescription: fallacy.explanation,
           fallacyType: fallacy.fallacy_type,
-          fallacyExample: fallacy.fallacious,
+          fallacyExample: fallacy.text,
           language: lang,
         }),
       });
@@ -80,7 +90,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
       return result;
     } catch (error) {
       console.error('Error evaluating answer:', error);
-      // Fallback to simple exact match if API fails
       return {
         isCorrect: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase(),
         explanation: '',
@@ -89,52 +98,38 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [lang]);
 
-  // Handle Next button click
-  const handleNext = async () => {
-    if (userInput.trim()) {
-      setTotalAttempts(totalAttempts + 1);
+  const handleNext = useCallback(async () => {
+    if (userInput.trim() && currentFallacy) {
+      setTotalAttempts(prevAttempts => prevAttempts + 1);
       
       const result = await evaluateAnswer(userInput, currentFallacy);
       setIsCorrect(result.isCorrect);
       setEvaluation(result);
       
       if (result.isCorrect) {
-        setScore(score + 1);
+        setScore(prevScore => prevScore + 1);
       }
       
       setShowAnswer(true);
     }
-  };
+  }, [userInput, currentFallacy, evaluateAnswer]);
 
-  // Handle Skip button click
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     loadNextFallacy();
-  };
+  }, [loadNextFallacy]);
 
-  // Initialize on component mount
   useEffect(() => {
-    // Start with all fallacies in the pool
-    setRemainingFallacies([...fallacyData]);
+    loadNextFallacy();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Load first fallacy once remaining fallacies are set
-  useEffect(() => {
-    if (remainingFallacies.length > 0 && !currentFallacy) {
-      loadNextFallacy();
-    }
-  }, [remainingFallacies, currentFallacy]);
-
-  // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Enter to submit when not showing answer
       if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoading) {
         handleNext();
-      }
-      // Space to proceed to next fallacy when showing answer
-      else if (e.key === ' ' && showAnswer) {
+      } else if (e.key === ' ' && showAnswer) {
         loadNextFallacy();
       }
     };
@@ -143,7 +138,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [userInput, showAnswer, isLoading]);
+  }, [userInput, showAnswer, isLoading, handleNext, loadNextFallacy]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
@@ -154,7 +149,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
           <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
             <div className="mb-8">
               <StatusBar 
-                remainingFallacies={remainingFallacies}
+                remainingFallacies={[]}
+                remainingCount={remainingCount}
                 score={score}
                 totalAttempts={totalAttempts}
                 dictionary={dictionary}

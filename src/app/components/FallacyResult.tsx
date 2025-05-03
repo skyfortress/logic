@@ -74,26 +74,12 @@ const FallacyResult = ({
           {currentFallacy.fallacy_type}
         </p>
       </div>
-
-      <p className="text-slate-700">
-        {currentFallacy.explanation}
-      </p>
-      
       <div>
         <h4 className="text-sm font-medium text-slate-600 mb-1">
           {dictionary.correctedArgument}
         </h4>
         <p className="text-slate-700">
           {currentFallacy.corrected}
-        </p>
-      </div>
-      
-      <div className="pt-2">
-        <h4 className="text-sm font-medium text-slate-600 mb-1">
-          {dictionary.yourAnswer}
-        </h4>
-        <p className="text-slate-700 bg-white p-3 rounded border border-slate-200">
-          {userInput}
         </p>
       </div>
     </div>

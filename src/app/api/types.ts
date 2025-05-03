@@ -16,3 +16,16 @@ export const EvaluationResponseSchema = z.object({
 });
 
 export type EvaluationResponse = z.infer<typeof EvaluationResponseSchema>;
+
+export interface Fallacy {
+  text: string;
+  fallacy_type: string;
+  explanation: string;
+  corrected: string;
+  id: number;
+}
+
+export interface FallacyResponse {
+  fallacy: Fallacy | null;
+  remaining: number;
+}

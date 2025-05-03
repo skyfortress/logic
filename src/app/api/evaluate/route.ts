@@ -7,38 +7,38 @@ import { StructuredOutputParser } from '@langchain/core/output_parsers';
 export async function POST(request: NextRequest) {
   try {
     const body: EvaluationRequest = await request.json();
-    const { userInput, correctAnswer, fallacyDescription, fallacyType, fallacyExample, language } = body;
+    const { userInput, fallacyType, fallacyExample, language } = body;
 
     const model = new ChatDeepSeek({
       modelName: 'deepseek-chat',
-      temperature: 0.7,
+      temperature: 0.8,
     });
 
     const parser = StructuredOutputParser.fromZodSchema(EvaluationResponseSchema);
 
     const evaluationPrompt = ChatPromptTemplate.fromMessages([
-      ['system', `You are an expert in logical reasoning and logical fallacies. 
-Evaluate if the user's response correctly identifies what's wrong with a statement containing a logical fallacy.`],
+      ['system', `You are a friendly and encouraging logic tutor with a sense of humor. 
+You evaluate if players correctly identify logical fallacies in statements, but you're not too strict - this is a game meant to be fun and educational.
+You MUST respond in the language specified by the user (${language}).`],
       ['human', `Given the following:
 
 Fallacy information:
-- Type: {fallacyType}
-- Description: {fallacyDescription}
 - Example: {fallacyExample}
 
-User's answer: {userInput}
-Correct answer: {correctAnswer}
+Player's answer: {userInput}
 
-First, determine if the user's answer is correct. An answer is correct if:
-1. The user correctly explained what's wrong with the logical reasoning in the statement
-2. The user demonstrated understanding of the flawed logic even if they didn't use technical terminology
+Language to respond in: {language}
 
-Consider identifying the specific fallacy type as a bonus that can improve the score but isn't required for correctness.
+Evaluate the player's answer with these guidelines:
+0. Evaluate whether player's answer is correct in general and is it applicable to the fallacy example.
+1. Be generous - if they got the general idea, count it as correct even if imprecise
+2. Award partial credit for attempts that show understanding but miss some details
+3. Be encouraging even when they're wrong
 
-Then provide:
-1. A binary decision: Is the user's answer correct? (true/false)
-2. A brief explanation for your decision (2-3 sentences maximum)
-3. A score from 0-100 based on the quality of the explanation (with extra points if they correctly identified the fallacy type)
+Provide:
+1. A binary decision: Is the player's answer generally correct? (true if they understood the core issue)
+2. A brief, friendly explanation with a touch of humor (2-3 sentences) IN THE {language} LANGUAGE
+3. A score from 0-100, being generous (60+ for attempts that show basic understanding)
 
 {format_instructions}`]
     ]);
@@ -48,10 +48,9 @@ Then provide:
     try {
       const evaluation = await chain.invoke({
         fallacyType,
-        fallacyDescription,
         fallacyExample,
         userInput,
-        correctAnswer,
+        language,
         format_instructions: parser.getFormatInstructions(),
       });
       
@@ -59,15 +58,17 @@ Then provide:
     } catch (error) {
       const fallbackEvaluation: EvaluationResponse = {
         isCorrect: false,
-        explanation: "Unable to evaluate response. Please try again with a more detailed explanation of what's wrong with the statement.",
-        score: 0
+        explanation: language === 'en' ? 
+          "Oops! Our logic circuits got tangled. Give it another shot - even Aristotle had off days!" : 
+          "Ой! Наші логічні схеми заплутались. Спробуйте ще раз - навіть Аристотель мав погані дні!",
+        score: 30
       };
       return NextResponse.json(fallbackEvaluation, { status: 200 });
     }
   } catch (error) {
     console.error('Error in evaluation API:', error);
     return NextResponse.json(
-      { error: 'Failed to evaluate response' },
+      { error: 'Our fallacy detector is taking a philosophical break. Try again!' },
       { status: 500 }
     );
   }

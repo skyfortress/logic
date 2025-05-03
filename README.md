@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Logical Fallacy Trainer
 
-## Getting Started
+**Logical Fallacy Trainer** is an interactive web-based tool designed to help people strengthen their critical thinking skills through active practice. The experience revolves around reading short arguments that contain subtle logical errors and explaining what’s wrong with them. Users receive immediate, intelligent feedback that helps deepen their understanding of flawed reasoning.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🧠 Purpose
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The core idea behind this tool is simple but powerful:  
+**People learn best by doing.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Rather than passively reading about fallacies, users are challenged to *engage* with flawed arguments—spotting inconsistencies, explaining why the reasoning doesn’t hold up, and optionally identifying the fallacy name.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This tool aims to:
+- Make critical thinking more interactive
+- Highlight everyday reasoning errors in a hands-on way
+- Encourage users to reflect, revise, and improve
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ Experience
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The tool is designed to feel:
+- **Minimalist** – clean, distraction-free interface
+- **Immediate** – responsive feedback from AI
+- **Encouraging** – positive reinforcement without being judgmental
+- **Challenging but fair** – helps users grow, not quiz them
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+It should feel more like a **mental trainer** than a test—guiding users to develop clarity of thought, not just memorize definitions.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎮 Gamification as Learning
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To deepen engagement, the trainer includes light gamification elements that support deliberate practice without pressure:
+
+- **Session score** — Tracks how often users identify the flaw correctly
+- **Streaks** — Rewards consistency with visual cues (e.g. 🔥 for 5+ correct in a row)
+- **Progress tracking** — Keeps users oriented within a session
+- **Instant feedback** — Users get encouraging and instructive feedback from an AI tutor
+- **Bonus goals** — Naming the fallacy is optional, but rewarded when attempted
+
+These elements are designed to make the process *feel rewarding*, reinforcing attention and reflection without turning the experience into a test.
+
+---
+
+## 🎯 Key Objectives
+
+- Help users develop an *intuitive grasp* of flawed reasoning
+- Reinforce critical thinking as a skill that can be practiced
+- Create moments of insight through real-time feedback
+- Make learning logical fallacies feel engaging and satisfying
+
+---
+
+## 🌍 Who It’s For
+
+- Students, debaters, and learners of logic or philosophy
+- People interested in rational thinking, argument analysis, or AI
+- Anyone who enjoys intellectual challenges or wants to reason better in daily life
+
+---
+
+## 💡 Design Philosophy
+
+We believe:
+- Learning should be **active**, not passive  
+- Understanding *why* something is wrong is more important than just labeling it  
+- Everyone can benefit from stronger reasoning—this is a universal skill  
+- Small, positive feedback loops create real momentum in learning
+
+---
+
+## 🧭 Future Vision
+
+This tool is a starting point. It opens the door to:
+- A deeper practice of logical self-reflection
+- A curriculum or gamified experience around reasoning
+- Collaborative or social elements in logic training
+
+---
+
+If it makes you think more clearly tomorrow than you did today, it’s doing its job.
