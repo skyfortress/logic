@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import fallacyData from '../data.json';
+import { EvaluationResponse } from '../api/types';
 
 // Import component files
 import Header from '../components/Header';
@@ -21,6 +22,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [remainingFallacies, setRemainingFallacies] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
 
   // Get a random fallacy without repetition until all are seen
   const getNextFallacy = () => {
@@ -47,22 +50,57 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
     setUserInput('');
     setShowAnswer(false);
     setIsCorrect(null);
+    setEvaluation(null);
   };
 
-  // Check if the user's answer is correct (case-insensitive comparison)
-  const checkAnswer = (input: string, fallacyType: string) => {
-    return input.trim().toLowerCase() === fallacyType.toLowerCase();
+  // Evaluate the user's answer using the API
+  const evaluateAnswer = async (input: string, fallacy: any) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/evaluate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userInput: input,
+          correctAnswer: fallacy.fallacy_type,
+          fallacyDescription: fallacy.explanation,
+          fallacyType: fallacy.fallacy_type,
+          fallacyExample: fallacy.fallacious,
+          language: lang,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Evaluation failed');
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error evaluating answer:', error);
+      // Fallback to simple exact match if API fails
+      return {
+        isCorrect: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase(),
+        explanation: '',
+        score: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase() ? 100 : 0
+      };
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle Next button click
-  const handleNext = () => {
+  const handleNext = async () => {
     if (userInput.trim()) {
       setTotalAttempts(totalAttempts + 1);
       
-      const correct = checkAnswer(userInput, currentFallacy.fallacy_type);
-      setIsCorrect(correct);
+      const result = await evaluateAnswer(userInput, currentFallacy);
+      setIsCorrect(result.isCorrect);
+      setEvaluation(result);
       
-      if (correct) {
+      if (result.isCorrect) {
         setScore(score + 1);
       }
       
@@ -92,7 +130,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Enter to submit when not showing answer
-      if (e.key === 'Enter' && userInput.trim() && !showAnswer) {
+      if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoading) {
         handleNext();
       }
       // Space to proceed to next fallacy when showing answer
@@ -105,7 +143,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [userInput, showAnswer]);
+  }, [userInput, showAnswer, isLoading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
@@ -139,6 +177,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
                   handleSkip={handleSkip}
                   userInput={userInput}
                   dictionary={dictionary}
+                  isLoading={isLoading}
                 />
               </div>
             </div>
@@ -149,6 +188,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: any; 
                 currentFallacy={currentFallacy}
                 userInput={userInput}
                 dictionary={dictionary}
+                evaluation={evaluation}
               />
             )}
           </div>
