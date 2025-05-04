@@ -1,29 +1,34 @@
 import React from 'react';
 import { Dictionary } from './types';
 
-const formatString = (str: string, values: Record<string, string | number>) => {
-  return str.replace(/{(\w+)}/g, (_, key) => String(values[key] || ''));
-};
-
 const StatusBar = ({ 
   score, 
-  totalAttempts, 
-  dictionary 
+  dictionary,
+  streak = 0
 }: { 
   score: number;
-  totalAttempts: number;
   dictionary: Dictionary;
-}) => (
-  <div className="flex items-center justify-between mb-4">
-    <h2 className="text-xl font-semibold text-slate-700">
-      {dictionary.identifyFallacy}
-    </h2>
-    <div className="flex items-center gap-4">
-      <div className="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">
-        {formatString(dictionary.score, { score, total: totalAttempts })}
+  streak?: number;
+}) => {
+  const showStreakIndicator = streak >= 5;
+  
+  return (
+    <div className="flex items-center justify-between mb-4">
+      <h2 className="text-xl font-semibold text-slate-700">
+        {dictionary.identifyFallacy}
+      </h2>
+      <div className="flex items-center gap-4">
+        <div className="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">
+          {dictionary.score} {score}
+        </div>
+        {streak > 0 && (
+          <div className={`text-sm px-3 py-1 rounded-full border ${showStreakIndicator ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-slate-50 text-slate-700 border-slate-100'}`}>
+            {showStreakIndicator ? `🔥 ${streak}` : `${streak}`}
+          </div>
+        )}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default StatusBar;

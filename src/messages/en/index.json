@@ -9,7 +9,7 @@
   "spaceAction": "for next",
   "identifyFallacy": "Identify the Fallacy",
   "allSeen": "All fallacies seen!",
-  "score": "Score: {score}/{total}",
+  "score": "Score:",
   "fallacyQuestion": "What's wrong with this reasoning?",
   "inputPlaceholder": "Explain what's flawed about this statement...",
   "checkAnswer": "Check Answer",

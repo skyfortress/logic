@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { EvaluationResponse, Fallacy, FallacyResponse } from '../api/types';
+import { EvaluationResponse, Fallacy } from '../api/types';
 import type { Dictionary } from '../components/types';
 
 import Header from '../components/Header';
@@ -11,17 +11,55 @@ import FallacyControls from '../components/FallacyControls';
 import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
+import { FallacyResponse } from '../api/fallacy/route';
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
   const [currentFallacy, setCurrentFallacy] = useState<Fallacy | null>(null);
   const [userInput, setUserInput] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [score, setScore] = useState(0);
-  const [totalAttempts, setTotalAttempts] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
   const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
+
+  // Load stored data from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedScore = localStorage.getItem('fallacyTrainerScore');
+      const storedStreak = localStorage.getItem('fallacyTrainerStreak');
+      const storedSeenFallacyIds = localStorage.getItem('fallacyTrainerSeenIds');
+      
+      if (storedScore) {
+        setScore(parseInt(storedScore, 10));
+      }
+      
+      if (storedStreak) {
+        setStreak(parseInt(storedStreak, 10));
+      }
+
+      if (storedSeenFallacyIds) {
+        try {
+          const parsedIds = JSON.parse(storedSeenFallacyIds);
+          if (Array.isArray(parsedIds)) {
+            setSeenFallacyIds(parsedIds);
+          }
+        } catch (e) {
+          localStorage.removeItem('fallacyTrainerSeenIds');
+        }
+      }
+    }
+  }, []);
+
+  // Save data to localStorage when values change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('fallacyTrainerScore', score.toString());
+      localStorage.setItem('fallacyTrainerStreak', streak.toString());
+      localStorage.setItem('fallacyTrainerSeenIds', JSON.stringify(seenFallacyIds));
+    }
+  }, [score, streak, seenFallacyIds]);
 
   const fetchNextFallacy = useCallback(async () => {
     try {
@@ -100,14 +138,15 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
 
   const handleNext = useCallback(async () => {
     if (userInput.trim() && currentFallacy) {
-      setTotalAttempts(prevAttempts => prevAttempts + 1);
-      
       const result = await evaluateAnswer(userInput, currentFallacy);
       setIsCorrect(result.isCorrect);
       setEvaluation(result);
       
       if (result.isCorrect) {
         setScore(prevScore => prevScore + 1);
+        setStreak(prevStreak => prevStreak + 1);
+      } else {
+        setStreak(0);
       }
       
       setShowAnswer(true);
@@ -125,6 +164,12 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Skip shortcuts if an input or textarea is focused
+      if (document.activeElement?.tagName === 'INPUT' || 
+          document.activeElement?.tagName === 'TEXTAREA') {
+        return;
+      }
+      
       if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoading) {
         handleNext();
       } else if (e.key === ' ') {
@@ -146,8 +191,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
             <div className="mb-8">
               <StatusBar 
                 score={score}
-                totalAttempts={totalAttempts}
                 dictionary={dictionary}
+                streak={streak}
               />
 
               <FallacyQuestion fallacy={currentFallacy} />
