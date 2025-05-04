@@ -55,6 +55,7 @@ Provide:
       });
       
       return NextResponse.json(evaluation, { status: 200 });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       const fallbackEvaluation: EvaluationResponse = {
         isCorrect: false,

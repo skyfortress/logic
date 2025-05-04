@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import { Dictionary } from './types';
 
 // Header component
-const Header = ({ dictionary, lang }: { dictionary: any, lang?: string }) => (
+const Header = ({ dictionary, lang }: { dictionary: Dictionary, lang?: string }) => (
   <header className="text-center mb-12">
     <div className="flex justify-between mb-4">
       {lang && (

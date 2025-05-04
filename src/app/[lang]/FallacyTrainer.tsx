@@ -127,7 +127,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoading) {
         handleNext();
-      } else if (e.key === ' ' && showAnswer) {
+      } else if (e.key === ' ') {
         loadNextFallacy();
       }
     };
