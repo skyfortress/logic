@@ -23,7 +23,7 @@ const StatusBar = ({
         </div>
         {streak > 0 && (
           <div className={`text-sm px-3 py-1 rounded-full border ${showStreakIndicator ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-slate-50 text-slate-700 border-slate-100'}`}>
-            {showStreakIndicator ? `🔥 ${streak}` : `${streak}`}
+            {`⚡ ${streak}`}
           </div>
         )}
       </div>

@@ -102,7 +102,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     setEvaluation(null);
   }, [fetchNextFallacy]);
 
-  const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy) => {
+  const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy): Promise<EvaluationResponse> => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/evaluate', {
@@ -142,8 +142,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       setIsCorrect(result.isCorrect);
       setEvaluation(result);
       
+      setScore(prevScore => prevScore + result.score);
       if (result.isCorrect) {
-        setScore(prevScore => prevScore + 1);
         setStreak(prevStreak => prevStreak + 1);
       } else {
         setStreak(0);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Dictionary } from './types';
 
 const FallacyControls = ({ 
@@ -18,19 +18,6 @@ const FallacyControls = ({
   dictionary: Dictionary;
   isLoading?: boolean;
 }) => {
-  const [dotIndex, setDotIndex] = useState(0);
-  const thinkingDots = ['', '.', '..', '...'];
-
-  useEffect(() => {
-    if (!isLoading) {
-      return;
-    }
-    const interval = setInterval(() => {
-      setDotIndex((prevIndex) => (prevIndex + 1) % thinkingDots.length);
-    }, 500);
-    return () => clearInterval(interval);
-  }, [isLoading]);
-
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-between">
       {!showAnswer ? (
@@ -46,9 +33,6 @@ const FallacyControls = ({
               </span>
               <span className="inline-flex items-center font-semibold">
                 {dictionary.evaluating}
-                <span className="inline-block w-8 overflow-hidden">
-                  {thinkingDots[dotIndex]}
-                </span>
               </span>
             </span>
           ) : (
