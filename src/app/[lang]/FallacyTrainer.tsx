@@ -20,7 +20,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingFallacy, setIsLoadingFallacy] = useState(false);
+  const [isEvaluating, setIsEvaluating] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
   const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
 
@@ -61,10 +62,16 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     }
   }, [score, streak, seenFallacyIds]);
 
-  const fetchNextFallacy = useCallback(async () => {
+  const fetchNextFallacy = useCallback(async (forceReset = false) => {
     try {
-      setIsLoading(true);
-      const excludeParam = seenFallacyIds.length > 0 ? `exclude=${seenFallacyIds.join(',')}` : '';
+      setIsLoadingFallacy(true);
+      
+      // Reset seen fallacies if forced or when all fallacies have been seen
+      if (forceReset) {
+        setSeenFallacyIds([]);
+      }
+      
+      const excludeParam = seenFallacyIds.length > 0 && !forceReset ? `exclude=${seenFallacyIds.join(',')}` : '';
       const langParam = `lang=${lang}`;
       const queryString = [excludeParam, langParam].filter(Boolean).join('&');
       const response = await fetch(`/api/fallacy${queryString ? `?${queryString}` : ''}`);
@@ -78,24 +85,22 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       if (data.fallacy) {
         setCurrentFallacy(data.fallacy);
         setSeenFallacyIds(prev => [...prev, data.fallacy?.id.toString() || '']);
-      } else if (seenFallacyIds.length > 0) {
-        // Reset seen fallacies instead of immediately recursing
-        setSeenFallacyIds([]);
-        // Use setTimeout to prevent immediate recursion
-        fetchNextFallacy();
+      } else if (!forceReset) {
+        // If we get null and haven't reset yet, try again with a reset
+        fetchNextFallacy(true);
       } else {
-        // If we have no fallacy and no seen fallacies, we might be out of fallacies
-        console.error('No fallacies available');
+        // If we've already tried resetting and still get null, there might be an issue
+        console.error('No fallacies available after reset');
       }
     } catch (error) {
       console.error('Error fetching fallacy:', error);
     } finally {
-      setIsLoading(false);
+      setIsLoadingFallacy(false);
     }
   }, [seenFallacyIds, lang]);
 
   const loadNextFallacy = useCallback(() => {
-    fetchNextFallacy();
+    fetchNextFallacy(false);
     setUserInput('');
     setShowAnswer(false);
     setIsCorrect(null);
@@ -104,7 +109,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
 
   const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy): Promise<EvaluationResponse> => {
     try {
-      setIsLoading(true);
+      setIsEvaluating(true);
       const response = await fetch('/api/evaluate', {
         method: 'POST',
         headers: {
@@ -132,7 +137,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         score: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase() ? 100 : 0
       };
     } finally {
-      setIsLoading(false);
+      setIsEvaluating(false);
     }
   }, [lang]);
 
@@ -170,7 +175,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         return;
       }
       
-      if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoading) {
+      if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoadingFallacy && !isEvaluating) {
         handleNext();
       } else if (e.key === ' ') {
         loadNextFallacy();
@@ -181,7 +186,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [userInput, showAnswer, isLoading, handleNext, loadNextFallacy]);
+  }, [userInput, showAnswer, isLoadingFallacy, isEvaluating, handleNext, loadNextFallacy]);
 
   return (<>
         <Header dictionary={dictionary} lang={lang} />
@@ -212,7 +217,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                   handleSkip={handleSkip}
                   userInput={userInput}
                   dictionary={dictionary}
-                  isLoading={isLoading}
+                  isLoadingFallacy={isLoadingFallacy}
+                  isEvaluating={isEvaluating}
                 />
               </div>
             </div>
