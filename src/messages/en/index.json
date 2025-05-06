@@ -1,7 +1,7 @@
 {
   "title": "Logical Fallacy Trainer",
   "subtitle": "Think sharper. Spot the flaws. Outsmart bad arguments.",
-  "instruction": "Read the statement, call out what’s wrong, and level up your logic game. Bonus points for naming the fallacy!",
+  "instruction": "Read the statement, call out what's wrong, and level up your logic game. Bonus points for naming the fallacy!",
   "shortcuts": "Quick Controls:",
   "enter": "Enter",
   "enterAction": "to submit",
@@ -10,7 +10,7 @@
   "identifyFallacy": "Find the Flaw",
   "allSeen": "You've tackled all today's fallacies!",
   "score": "Score:",
-  "fallacyQuestion": "What’s off about this reasoning?",
+  "fallacyQuestion": "What's off about this reasoning?",
   "inputPlaceholder": "Call out the flaw in your own words...",
   "checkAnswer": "Reveal Answer",
   "nextFallacy": "Next Round",
@@ -26,9 +26,20 @@
     "title": "Fallacy Library",
     "description": "Explore and learn the tricks behind faulty reasoning.",
     "example": "Try this:",
-    "explanation": "Why it doesn’t hold up:"
+    "explanation": "Why it doesn't hold up:"
   },
   "backToTrainer": "Back to the Challenge",
   "aiEvaluation": "Evaluation",
-  "fallacyType": "Fallacy type"
+  "fallacyType": "Fallacy type",
+  "metadata": {
+    "rootTitle": "Logic trainer - Learn Logical Fallacies",
+    "rootDescription": "Improve your critical thinking by learning about logical fallacies. Practice identifying common logical errors in arguments and reasoning.",
+    "rootKeywords": "logical fallacies, critical thinking, reasoning, logic, argumentation, fallacy trainer",
+    "ogTitle": "Logic trainer - Learn Logical Fallacies",
+    "ogDescription": "Improve your critical thinking by learning about logical fallacies",
+    "defaultTitle": "Learn Logical Fallacies | Logic trainer",
+    "fallaciesListTitle": "List of Logical Fallacies",
+    "fallaciesListDescription": "Complete list of common logical fallacies with examples and explanations. Learn how to identify flaws in reasoning and argumentation.",
+    "fallaciesListKeywords": "logical fallacies, fallacy list, reasoning errors, critical thinking, types of fallacies"
+  }
 }

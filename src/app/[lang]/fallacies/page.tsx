@@ -2,6 +2,21 @@ import { getDictionary } from '@/i18n/dictionary';
 import type { Locale } from '@/i18n/settings';
 import generalDataEn from './general-data-en.json';
 import generalDataUa from './general-data-ua.json';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { lang: Locale } 
+}): Promise<Metadata> {
+  const dictionary = await getDictionary(params.lang);
+  
+  return {
+    title: dictionary.metadata.fallaciesListTitle,
+    description: dictionary.metadata.fallaciesListDescription,
+    keywords: dictionary.metadata.fallaciesListKeywords,
+  };
+}
 
 export default async function FallaciesPage({ params: { lang } }: { params: { lang: Locale } }) {
   const dictionary = await getDictionary(lang);
