@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootPage() {
+export default async function RootPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
   redirect(`/${i18n.defaultLocale}`);
 }

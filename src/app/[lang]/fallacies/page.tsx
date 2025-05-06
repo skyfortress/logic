@@ -7,9 +7,9 @@ import { Metadata } from 'next';
 export async function generateMetadata({ 
   params 
 }: { 
-  params: { lang: Locale } 
+  params: Promise<{ lang: Locale }> 
 }): Promise<Metadata> {
-  const dictionary = await getDictionary(params.lang);
+  const dictionary = await getDictionary((await params).lang);
   
   return {
     title: dictionary.metadata.fallaciesListTitle,
@@ -18,7 +18,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function FallaciesPage({ params: { lang } }: { params: { lang: Locale } }) {
+export default async function FallaciesPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params;
   const dictionary = await getDictionary(lang);
   const fallacyData = lang === 'en' ? generalDataEn : generalDataUa;
 
@@ -51,7 +52,7 @@ export default async function FallaciesPage({ params: { lang } }: { params: { la
                 <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.fallaciesList?.explanation || 'Explanation'}</h3>
                 <p className="text-slate-700">{fallacy.explanation}</p>
                 </div>
-                
+
                 <div>
                 <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.correctedArgument || 'Corrected'}</h3>
                 <p className="text-slate-700 text-sm">{fallacy.correctedExample}</p>
@@ -59,6 +60,6 @@ export default async function FallaciesPage({ params: { lang } }: { params: { la
             </div>
             ))}
         </div>
-        </>
+    </>
   );
 }
