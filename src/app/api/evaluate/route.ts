@@ -84,7 +84,7 @@ Provide:
       const evaluation = await chain.invoke({
         fallacyType,
         fallacyExample,
-        userInput,
+        userInput: userInput || 'Don\'t know',
         language,
         format_instructions: parser.getFormatInstructions(),
       });

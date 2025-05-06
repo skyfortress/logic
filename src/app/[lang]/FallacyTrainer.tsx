@@ -112,6 +112,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     setIsCorrect(null);
     setEvaluation(null);
     setRecaptchaError(null);
+    setRecaptchaToken(null);
     if (recaptchaRef.current) {
       recaptchaRef.current.reset();
     }
