@@ -1,52 +1,562 @@
 [
-    {
-      "text": "If we allow people to eat chocolate every day, soon everyone will be eating nothing but chocolate and become unhealthy.",
-      "fallacy_type": "Slippery Slope",
-      "corrected": "Allowing people to eat chocolate every day does not mean they will stop eating other foods or become unhealthy, as moderation and balanced diets are still possible."
-    },
-    {
-      "text": "You can't trust anything John says about climate change because he's not a scientist.",
-      "fallacy_type": "Ad Hominem",
-      "corrected": "Regardless of John's profession, his arguments about climate change should be evaluated based on their merit and supporting evidence."
-    },
-    {
-      "text": "Either we ban all cars in the city, or pollution will never decrease.",
-      "fallacy_type": "False Dilemma",
-      "corrected": "There are multiple ways to reduce pollution in the city, such as improving public transport or encouraging electric vehicles, not just banning all cars."
-    },
-    {
-      "text": "Everyone I know is buying the new phone, so it must be the best one available.",
-      "fallacy_type": "Bandwagon",
-      "corrected": "Popularity does not necessarily indicate quality; the best phone should be determined by features and performance."
-    },
-    {
-      "text": "If you don't support this new law, you must not care about public safety.",
-      "fallacy_type": "Strawman",
-      "corrected": "Someone can oppose the new law for various reasons and still care about public safety."
-    },
-    {
-      "text": "My grandfather smoked every day and lived to be 90, so smoking can't be that bad for you.",
-      "fallacy_type": "Anecdotal",
-      "corrected": "While some individuals may live long lives despite smoking, scientific studies show that smoking increases health risks overall."
-    },
-    {
-      "text": "We shouldn't listen to her argument about recycling because she's been seen littering before.",
-      "fallacy_type": "Tu Quoque",
-      "corrected": "Her personal actions do not invalidate the points she makes about recycling."
-    },
-    {
-      "text": "No one has ever proven that aliens don't exist, so they must be real.",
-      "fallacy_type": "Appeal to Ignorance",
-      "corrected": "The lack of evidence against the existence of aliens does not prove they exist."
-    },
-    {
-      "text": "Cats are better pets than dogs because everyone knows cats are superior.",
-      "fallacy_type": "Begging the Question",
-      "corrected": "To argue that cats are better pets, one should provide reasons, such as their independence or cleanliness."
-    },
-    {
-      "text": "If we allow students to redo one assignment, soon they'll expect to redo every test and project.",
-      "fallacy_type": "Slippery Slope",
-      "corrected": "Allowing students to redo one assignment does not mean they will expect to redo all assessments; clear policies can prevent this."
-    }
-  ]
+  {
+    "text": "If we allow people to eat chocolate every day, soon everyone will be eating nothing but chocolate and become unhealthy.",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Allowing people to eat chocolate every day does not mean they will stop eating other foods or become unhealthy, as moderation and balanced diets are still possible."
+  },
+  {
+    "text": "You shouldn't vote for him; he's been divorced twice!",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "A person's marital history does not necessarily reflect their ability to govern; policies and qualifications should be evaluated instead."
+  },
+  {
+    "text": "Everyone is buying this new phone, so it must be the best.",
+    "fallacy_type": "Bandwagon",
+    "corrected": "Popularity does not determine quality; the phone should be evaluated based on its features and performance."
+  },
+  {
+    "text": "If we legalize marijuana, next we'll legalize all drugs, and society will collapse.",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Legalizing marijuana does not inevitably lead to legalizing all drugs; policies can be implemented with regulation."
+  },
+  {
+    "text": "All scientists agree that climate change is real, so it must be true.",
+    "fallacy_type": "Appeal to Authority",
+    "corrected": "While consensus among scientists is strong, claims should be supported by evidence rather than just authority."
+  },
+  {
+    "text": "You either support the war, or you hate your country.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "There are more nuanced positions; one can oppose a war while still loving their country."
+  },
+  {
+    "text": "This medicine works because it's natural.",
+    "fallacy_type": "Appeal to Nature",
+    "corrected": "Natural does not always mean safe or effective; scientific evidence should determine efficacy."
+  },
+  {
+    "text": "She's a great singer because she says she's the best.",
+    "fallacy_type": "Circular Reasoning",
+    "corrected": "Her claim of being the best does not prove her skill; evidence like vocal ability should be assessed."
+  },
+  {
+    "text": "We should ban all violent video games because one criminal played them.",
+    "fallacy_type": "Hasty Generalization",
+    "corrected": "A single case does not prove causation; broader research is needed to assess effects."
+  },
+  {
+    "text": "If you don’t donate to our charity, you don’t care about children.",
+    "fallacy_type": "Emotional Appeal",
+    "corrected": "Not donating does not imply indifference; people may support causes in different ways."
+  },
+  {
+    "text": "My grandfather smoked every day and lived to 100, so smoking isn’t harmful.",
+    "fallacy_type": "Anecdotal",
+    "corrected": "A single case does not override statistical evidence showing smoking's health risks."
+  },
+  {
+    "text": "The president raised taxes, and then the economy crashed—clearly, taxes caused it.",
+    "fallacy_type": "Post Hoc",
+    "corrected": "Correlation does not prove causation; other economic factors likely contributed."
+  },
+  {
+    "text": "You can't criticize the government; it's unpatriotic!",
+    "fallacy_type": "Appeal to Emotion",
+    "corrected": "Constructive criticism is part of a healthy democracy, not necessarily unpatriotic."
+  },
+  {
+    "text": "This diet pill works—just look at this celebrity who lost weight!",
+    "fallacy_type": "Cherry Picking",
+    "corrected": "A single success story does not prove effectiveness; clinical studies are needed."
+  },
+  {
+    "text": "If you don’t believe in my religion, you’ll go to hell.",
+    "fallacy_type": "Appeal to Fear",
+    "corrected": "Belief should be based on reasoned argument, not fear of punishment."
+  },
+  {
+    "text": "We shouldn’t change the law because it’s always been this way.",
+    "fallacy_type": "Appeal to Tradition",
+    "corrected": "Tradition alone is not a valid reason to keep a law; current relevance should be considered."
+  },
+  {
+    "text": "You’re wrong because you’re too young to understand.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Age does not determine correctness; arguments should be evaluated on merit."
+  },
+  {
+    "text": "All rich people are greedy.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Wealth does not determine character; individuals should be judged separately."
+  },
+  {
+    "text": "If we let students redo tests, soon nobody will study!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Redoing tests does not necessarily lead to no studying; students may still prepare."
+  },
+  {
+    "text": "This politician is corrupt because my opponent says so.",
+    "fallacy_type": "Appeal to Authority (Weak)",
+    "corrected": "Claims should be backed by evidence, not just an opponent’s accusation."
+  },
+  {
+    "text": "You can’t trust her opinion; she’s a known liberal.",
+    "fallacy_type": "Genetic Fallacy",
+    "corrected": "Her political leaning does not automatically invalidate her argument."
+  },
+  {
+    "text": "The Bible is true because it says it’s the word of God.",
+    "fallacy_type": "Circular Reasoning",
+    "corrected": "A text cannot prove its own validity; external evidence is needed."
+  },
+  {
+    "text": "If we allow gay marriage, next people will marry animals!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Legalizing same-sex marriage does not logically lead to bestiality; they are unrelated."
+  },
+  {
+    "text": "He must be guilty; he looks suspicious.",
+    "fallacy_type": "Appearance as Evidence",
+    "corrected": "Guilt must be proven with evidence, not assumptions based on looks."
+  },
+  {
+    "text": "You should buy this car; real men drive trucks.",
+    "fallacy_type": "Appeal to Masculinity",
+    "corrected": "Vehicle choice does not determine masculinity; preferences vary."
+  },
+  {
+    "text": "Four out of five dentists recommend this toothpaste!",
+    "fallacy_type": "Cherry Picking",
+    "corrected": "The sample may be biased; how many dentists were surveyed?"
+  },
+  {
+    "text": "If you don’t support my business, you’re not a true friend.",
+    "fallacy_type": "Emotional Blackmail",
+    "corrected": "Friendship should not be conditional on business support."
+  },
+  {
+    "text": "She’s a bad leader because she’s too emotional.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Leadership should be judged by results, not stereotypes about emotions."
+  },
+  {
+    "text": "This law is bad because a criminal supports it.",
+    "fallacy_type": "Genetic Fallacy",
+    "corrected": "A law’s merit depends on its content, not who supports it."
+  },
+  {
+    "text": "You can’t be tired; you’re just lazy!",
+    "fallacy_type": "Straw Man",
+    "corrected": "Tiredness and laziness are different; fatigue may have legitimate causes."
+  },
+  {
+    "text": "We should ignore climate change; winters are still cold!",
+    "fallacy_type": "Anecdotal",
+    "corrected": "Local weather does not refute global climate trends."
+  },
+  {
+    "text": "If you don’t agree with me, you must be stupid.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Disagreement does not indicate intelligence; differing perspectives exist."
+  },
+  {
+    "text": "This policy is good because it’s patriotic!",
+    "fallacy_type": "Appeal to Emotion",
+    "corrected": "Patriotism does not automatically make a policy effective or just."
+  },
+  {
+    "text": "He's a great athlete, so he must be a great person too.",
+    "fallacy_type": "Halo Effect",
+    "corrected": "Athletic skill does not necessarily reflect moral character."
+  },
+  {
+    "text": "You're either with us, or against us.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Neutral or nuanced positions may exist beyond binary choices."
+  },
+  {
+    "text": "She failed the test, so she must not have studied.",
+    "fallacy_type": "Jumping to Conclusions",
+    "corrected": "Other factors (illness, misunderstanding) could explain the result."
+  },
+  {
+    "text": "This movie is terrible because the critics hated it.",
+    "fallacy_type": "Appeal to Authority",
+    "corrected": "Personal taste may differ; the movie should be judged on its own merits."
+  },
+  {
+    "text": "If we teach evolution, students will stop believing in God!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Learning science does not necessarily negate religious faith."
+  },
+  {
+    "text": "He’s a criminal, so his opinion on laws is worthless.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Past crimes do not automatically invalidate his arguments."
+  },
+  {
+    "text": "This product is expensive, so it must be high-quality.",
+    "fallacy_type": "Appeal to Wealth",
+    "corrected": "Price does not always correlate with quality; evidence is needed."
+  },
+  {
+    "text": "You don’t support tax cuts? You must love big government!",
+    "fallacy_type": "Straw Man",
+    "corrected": "Opposing tax cuts does not necessarily mean supporting big government."
+  },
+  {
+    "text": "She’s a scientist, so she must be an atheist.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Scientists hold diverse religious views; profession does not dictate belief."
+  },
+  {
+    "text": "If we let refugees in, crime will skyrocket!",
+    "fallacy_type": "Hasty Generalization",
+    "corrected": "Refugees are not inherently criminals; data should be examined."
+  },
+  {
+    "text": "You can’t trust his research; he’s funded by a corporation.",
+    "fallacy_type": "Conflict of Interest (Potential)",
+    "corrected": "Funding source does not automatically invalidate findings, but transparency helps."
+  },
+  {
+    "text": "This law is unjust because it’s unpopular.",
+    "fallacy_type": "Appeal to Popularity",
+    "corrected": "Justice should be based on principles, not just public opinion."
+  },
+  {
+    "text": "If you don’t eat organic, you’re poisoning yourself.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Non-organic food is not inherently poisonous; risks vary."
+  },
+  {
+    "text": "He’s a great speaker, so his policies must be good.",
+    "fallacy_type": "Halo Effect",
+    "corrected": "Charisma does not equal sound policy; ideas should be evaluated separately."
+  },
+  {
+    "text": "We’ve always used coal, so we shouldn’t switch to renewables.",
+    "fallacy_type": "Appeal to Tradition",
+    "corrected": "Past practices should not prevent progress if better options exist."
+  },
+  {
+    "text": "You’re wrong because you’re not an expert.",
+    "fallacy_type": "Appeal to Authority",
+    "corrected": "Non-experts can still make valid points; arguments should stand on their own."
+  },
+  {
+    "text": "If we allow free speech, hate speech will take over!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Free speech can coexist with limits without leading to chaos."
+  },
+  {
+    "text": "This policy worked in Sweden, so it will work here.",
+    "fallacy_type": "False Analogy",
+    "corrected": "Different countries have unique contexts; results may vary."
+  },
+  {
+    "text": "She’s a bad mom because she works full-time.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Parenting quality is not determined solely by employment status."
+  },
+  {
+    "text": "You don’t like this band? You must have terrible taste!",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Musical preference is subjective; disagreement is not a personal flaw."
+  },
+  {
+    "text": "If we ban guns, only criminals will have them!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Regulation does not necessarily lead to total disarmament of law-abiding citizens."
+  },
+  {
+    "text": "This politician is honest because he says so.",
+    "fallacy_type": "Circular Reasoning",
+    "corrected": "Self-claim does not prove honesty; actions and evidence do."
+  },
+  {
+    "text": "You can’t be a feminist if you wear makeup.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Feminism allows for personal choice, including makeup."
+  },
+  {
+    "text": "If you don’t support the military, you’re un-American.",
+    "fallacy_type": "Appeal to Emotion",
+    "corrected": "Patriotism can take many forms, including questioning policies."
+  },
+  {
+    "text": "He’s a genius, so he must be right about everything.",
+    "fallacy_type": "Halo Effect",
+    "corrected": "Intelligence does not guarantee infallibility."
+  },
+  {
+    "text": "This medicine is natural, so it’s safe.",
+    "fallacy_type": "Appeal to Nature",
+    "corrected": "Natural substances can still be harmful; safety requires testing."
+  },
+  {
+    "text": "You’re too poor to understand economics.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Financial status does not determine understanding of economic principles."
+  },
+  {
+    "text": "If you don’t like this movie, you hate art.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Disliking one film does not equate to rejecting all art."
+  },
+  {
+    "text": "This diet worked for me, so it will work for everyone!",
+    "fallacy_type": "Anecdotal",
+    "corrected": "Individual results vary; broader studies are needed."
+  },
+  {
+    "text": "The CEO is rich, so he must be greedy.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Wealth does not automatically imply greed; individual actions matter."
+  },
+  {
+    "text": "If we let kids choose their bedtime, they’ll never sleep!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Children can learn responsibility without extreme outcomes."
+  },
+  {
+    "text": "You’re not a real vegan if you sometimes eat honey.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Veganism has varying interpretations; purity tests are subjective."
+  },
+  {
+    "text": "This law is good because it’s new.",
+    "fallacy_type": "Appeal to Novelty",
+    "corrected": "Newness does not guarantee quality; the law’s merits should be evaluated."
+  },
+  {
+    "text": "You can’t criticize the military; they protect us!",
+    "fallacy_type": "Appeal to Emotion",
+    "corrected": "Constructive criticism can coexist with respect for service."
+  },
+  {
+    "text": "If you support taxes, you must love wasting money.",
+    "fallacy_type": "Straw Man",
+    "corrected": "Taxation funds public services; support does not imply waste."
+  },
+  {
+    "text": "She’s a lawyer, so she must be dishonest.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Profession does not determine character; individuals vary."
+  },
+  {
+    "text": "This policy failed before, so it will always fail.",
+    "fallacy_type": "Hasty Generalization",
+    "corrected": "Context changes over time; past failure does not guarantee future results."
+  },
+  {
+    "text": "You’re wrong because you’re not from here.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Origin does not invalidate arguments; evidence does."
+  },
+  {
+    "text": "If we teach sex ed, teens will become promiscuous!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Education does not necessarily increase risky behavior; it can promote safety."
+  },
+  {
+    "text": "He’s a celebrity, so his opinion on politics matters.",
+    "fallacy_type": "Appeal to Authority",
+    "corrected": "Fame does not equal expertise in governance."
+  },
+  {
+    "text": "You’re either part of the solution or part of the problem.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Neutral or mixed roles exist; issues are rarely binary."
+  },
+  {
+    "text": "This book is bad because the author is controversial.",
+    "fallacy_type": "Genetic Fallacy",
+    "corrected": "Content should be judged separately from the author’s reputation."
+  },
+  {
+    "text": "If we let AI write articles, soon robots will replace all writers!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "AI tools can assist without completely replacing human creativity."
+  },
+  {
+    "text": "You don’t exercise? You must be lazy.",
+    "fallacy_type": "Jumping to Conclusions",
+    "corrected": "Many factors (health, time) can affect exercise habits."
+  },
+  {
+    "text": "This politician is old, so he’s out of touch.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Age does not necessarily correlate with awareness; policies matter more."
+  },
+  {
+    "text": "If you don’t like capitalism, you must be a communist.",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Economic views exist on a spectrum, not just two extremes."
+  },
+  {
+    "text": "This restaurant is always empty, so the food must be bad.",
+    "fallacy_type": "Hasty Generalization",
+    "corrected": "Other factors (location, marketing) could explain low patronage."
+  },
+  {
+    "text": "You’re not a real fan if you haven’t seen every episode.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Fandom is subjective; dedication varies."
+  },
+  {
+    "text": "If we allow protests, anarchy will follow!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Peaceful protests are a democratic right and do not guarantee chaos."
+  },
+  {
+    "text": "He’s a doctor, so he must be rich.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Doctors’ incomes vary; profession does not guarantee wealth."
+  },
+  {
+    "text": "This idea is stupid because nobody supports it.",
+    "fallacy_type": "Bandwagon",
+    "corrected": "Popularity does not determine validity; arguments should stand on merit."
+  },
+  {
+    "text": "If you don’t vote for me, the country will collapse!",
+    "fallacy_type": "Appeal to Fear",
+    "corrected": "Political outcomes are complex; no single election guarantees ruin."
+  },
+  {
+    "text": "You’re a vegetarian? You must hate farmers.",
+    "fallacy_type": "Straw Man",
+    "corrected": "Vegetarianism is a dietary choice, not an attack on farmers."
+  },
+  {
+    "text": "This software is open-source, so it must be better.",
+    "fallacy_type": "Appeal to Nature",
+    "corrected": "Open-source has pros and cons; quality depends on implementation."
+  },
+  {
+    "text": "If we raise wages, all businesses will shut down!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Moderate wage increases can coexist with a healthy economy."
+  },
+  {
+    "text": "You’re not a real artist if you use digital tools.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Artistic mediums evolve; digital work is still valid art."
+  },
+  {
+    "text": "He’s a war hero, so his policies must be good.",
+    "fallacy_type": "Halo Effect",
+    "corrected": "Military service does not automatically make policies sound."
+  },
+  {
+    "text": "If we ban plastic straws, soon the government will control everything!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Environmental regulations do not necessarily lead to totalitarianism."
+  },
+  {
+    "text": "You’re a journalist, so you must be biased.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Journalists strive for objectivity; bias varies by individual."
+  },
+  {
+    "text": "This vaccine is new, so it must be unsafe.",
+    "fallacy_type": "Appeal to Novelty (Reverse)",
+    "corrected": "Newness does not equal danger; testing determines safety."
+  },
+  {
+    "text": "If you don’t like my cooking, you’re ungrateful.",
+    "fallacy_type": "Emotional Appeal",
+    "corrected": "Personal taste is subjective; dislike does not imply ingratitude."
+  },
+  {
+    "text": "You’re a programmer, so you must be bad at social skills.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Profession does not dictate personality traits."
+  },
+  {
+    "text": "If we let kids play video games, they’ll never go outside!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Moderation is possible; gaming does not eliminate outdoor activity."
+  },
+  {
+    "text": "You’re not a real man if you cry.",
+    "fallacy_type": "Appeal to Masculinity",
+    "corrected": "Emotional expression is human, not gender-specific."
+  },
+  {
+    "text": "This politician is young, so he’s naive.",
+    "fallacy_type": "Ad Hominem",
+    "corrected": "Age does not determine wisdom; ideas should be evaluated fairly."
+  },
+  {
+    "text": "If we allow this protest, soon riots will happen!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Peaceful protests do not inevitably lead to violence."
+  },
+  {
+    "text": "You’re a teacher, so you must love all children.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Teachers are individuals with varying patience and preferences."
+  },
+  {
+    "text": "This product is popular on TikTok, so it must be good.",
+    "fallacy_type": "Bandwagon",
+    "corrected": "Social media trends do not guarantee quality."
+  },
+  {
+    "text": "If you don’t support this law, you’re supporting criminals!",
+    "fallacy_type": "False Dilemma",
+    "corrected": "Opposition to a law can stem from various concerns, not just criminal sympathy."
+  },
+  {
+    "text": "You’re a banker, so you must be greedy.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Profession does not determine moral character."
+  },
+  {
+    "text": "If we don’t stop immigration, our culture will disappear!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Cultures evolve and adapt; immigration does not erase them."
+  },
+  {
+    "text": "You’re not a real gamer if you play on easy mode.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Gaming preferences vary; difficulty choice does not define fandom."
+  },
+  {
+    "text": "This policy is bad because a dictator once supported it.",
+    "fallacy_type": "Genetic Fallacy",
+    "corrected": "A policy’s merit depends on its content, not past supporters."
+  },
+  {
+    "text": "If you don’t like dogs, you’re a bad person.",
+    "fallacy_type": "Emotional Appeal",
+    "corrected": "Personal preferences do not determine moral worth."
+  },
+  {
+    "text": "You’re a politician, so you must be corrupt.",
+    "fallacy_type": "Stereotyping",
+    "corrected": "Corruption varies by individual; profession does not dictate ethics."
+  },
+  {
+    "text": "If we allow free college, no one will value education!",
+    "fallacy_type": "Slippery Slope",
+    "corrected": "Accessibility does not diminish value; many may pursue more learning."
+  },
+  {
+    "text": "You’re not a real athlete if you don’t play team sports.",
+    "fallacy_type": "No True Scotsman",
+    "corrected": "Athleticism includes individual sports and diverse activities."
+  },
+  {
+    "text": "This theory is true because it can’t be disproven.",
+    "fallacy_type": "Appeal to Ignorance",
+    "corrected": "A claim requires positive evidence, not just lack of disproof."
+  },
+  {
+    "text": "If you don’t like this music, you have no soul.",
+    "fallacy_type": "Emotional Appeal",
+    "corrected": "Musical taste is subjective, not a measure of character."
+  }
+]
