@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { EvaluationResponse, Fallacy } from '../api/types';
 import type { Dictionary } from '../components/types';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import Header from '../components/Header';
 import FallacyQuestion from '../components/FallacyQuestion';
@@ -12,6 +13,8 @@ import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 import { FallacyResponse } from '../api/fallacy/route';
+
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Default test key
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
   const [currentFallacy, setCurrentFallacy] = useState<Fallacy | null>(null);
@@ -24,6 +27,9 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
   const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   // Load stored data from localStorage on component mount
   useEffect(() => {
@@ -46,7 +52,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
           if (Array.isArray(parsedIds)) {
             setSeenFallacyIds(parsedIds);
           }
-        } catch (e) {
+        } catch (_) {
           localStorage.removeItem('fallacyTrainerSeenIds');
         }
       }
@@ -105,11 +111,37 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     setShowAnswer(false);
     setIsCorrect(null);
     setEvaluation(null);
+    setRecaptchaError(null);
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
   }, [fetchNextFallacy]);
+
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+    setRecaptchaError(null);
+  };
 
   const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy): Promise<EvaluationResponse> => {
     try {
       setIsEvaluating(true);
+      
+      // Get token only if we don't have one already
+      let token = recaptchaToken;
+      if (!token && recaptchaRef.current) {
+        try {
+          token = await recaptchaRef.current.executeAsync();
+          setRecaptchaToken(token);
+        } catch (error) {
+          console.error('ReCAPTCHA execution error:', error);
+        }
+      }
+
+      // Only show an error if we still don't have a token after trying to get one
+      if (!token) {
+        throw new Error('reCAPTCHA verification required');
+      }
+
       const response = await fetch('/api/evaluate', {
         method: 'POST',
         headers: {
@@ -117,20 +149,47 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         },
         body: JSON.stringify({
           userInput: input,
+          correctAnswer: fallacy.fallacy_type,
+          fallacyDescription: fallacy.explanation,
           fallacyType: fallacy.fallacy_type,
           fallacyExample: fallacy.text,
           language: lang,
+          recaptchaToken: token,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Evaluation failed');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Evaluation failed');
       }
 
       const result = await response.json();
       return result;
     } catch (error) {
       console.error('Error evaluating answer:', error);
+      
+      if ((error as Error).message === 'reCAPTCHA verification required') {
+        setRecaptchaError('Please complete the reCAPTCHA verification');
+        return {
+          isCorrect: false,
+          explanation: lang === 'en' ? 
+            'Please complete the reCAPTCHA verification first.' : 
+            'Будь ласка, спочатку пройдіть перевірку reCAPTCHA.',
+          score: 0
+        };
+      }
+      
+      if ((error as Error).message === 'Invalid reCAPTCHA. Please try again.') {
+        setRecaptchaError('Invalid reCAPTCHA. Please try again.');
+        return {
+          isCorrect: false,
+          explanation: lang === 'en' ? 
+            'Invalid reCAPTCHA verification. Please try again.' : 
+            'Недійсна перевірка reCAPTCHA. Будь ласка, спробуйте ще раз.',
+          score: 0
+        };
+      }
+      
       return {
         isCorrect: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase(),
         explanation: '',
@@ -139,24 +198,30 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     } finally {
       setIsEvaluating(false);
     }
-  }, [lang]);
+  }, [lang, recaptchaToken]);
 
   const handleNext = useCallback(async () => {
-    if (userInput.trim() && currentFallacy) {
-      const result = await evaluateAnswer(userInput, currentFallacy);
-      setIsCorrect(result.isCorrect);
-      setEvaluation(result);
-      
-      setScore(prevScore => prevScore + result.score);
-      if (result.isCorrect) {
-        setStreak(prevStreak => prevStreak + 1);
-      } else {
-        setStreak(0);
+    if (currentFallacy) {
+      try {
+        const result = await evaluateAnswer(userInput, currentFallacy);
+        setIsCorrect(result.isCorrect);
+        setEvaluation(result);
+        
+        if (!recaptchaError) {
+          setScore(prevScore => prevScore + result.score);
+          if (result.isCorrect) {
+            setStreak(prevStreak => prevStreak + 1);
+          } else {
+            setStreak(0);
+          }
+        }
+        
+        setShowAnswer(true);
+      } catch (error) {
+        console.error('Error handling next:', error);
       }
-      
-      setShowAnswer(true);
     }
-  }, [userInput, currentFallacy, evaluateAnswer]);
+  }, [userInput, currentFallacy, evaluateAnswer, recaptchaError]);
 
   const handleSkip = useCallback(() => {
     loadNextFallacy();
@@ -175,7 +240,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         return;
       }
       
-      if (e.key === 'Enter' && userInput.trim() && !showAnswer && !isLoadingFallacy && !isEvaluating) {
+      if (e.key === 'Enter' && !showAnswer && !isLoadingFallacy && !isEvaluating) {
         handleNext();
       } else if (e.key === ' ') {
         loadNextFallacy();
@@ -209,6 +274,19 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                   showAnswer={showAnswer}
                   dictionary={dictionary}
                 />
+
+                <div className="flex flex-col items-center my-4">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    size="invisible"
+                    onChange={handleRecaptchaChange}
+                    hl={lang === 'ua' ? 'uk' : lang}
+                  />
+                  {recaptchaError && (
+                    <div className="text-red-500 text-sm mt-2">{recaptchaError}</div>
+                  )}
+                </div>
 
                 <FallacyControls 
                   showAnswer={showAnswer}

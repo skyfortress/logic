@@ -7,6 +7,7 @@ export interface EvaluationRequest {
   fallacyType: string;
   fallacyExample: string;
   language: string;
+  recaptchaToken: string;
 }
 
 export const EvaluationResponseSchema = z.object({

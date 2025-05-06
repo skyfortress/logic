@@ -1,16 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChatDeepSeek } from '@langchain/deepseek';
+import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { EvaluationRequest, EvaluationResponse, EvaluationResponseSchema } from '../types';
 import { StructuredOutputParser } from '@langchain/core/output_parsers';
 
+const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY || '';
+
+async function verifyRecaptchaToken(token: string): Promise<boolean> {
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${RECAPTCHA_SECRET_KEY}&response=${token}`,
+    });
+
+    const data = await response.json();
+    return data.success === true;
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body: EvaluationRequest = await request.json();
-    const { userInput, fallacyType, fallacyExample, language } = body;
+    const { userInput, fallacyType, fallacyExample, language, recaptchaToken } = body;
 
-    const model = new ChatDeepSeek({
-      modelName: 'deepseek-chat',
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { error: 'reCAPTCHA token is required' },
+        { status: 400 }
+      );
+    }
+
+    const isValidToken = await verifyRecaptchaToken(recaptchaToken);
+    if (!isValidToken) {
+      return NextResponse.json(
+        { error: 'Invalid reCAPTCHA. Please try again.' },
+        { status: 403 }
+      );
+    }
+
+    const model = new ChatOpenAI({
+      modelName: 'gpt-4.1-mini',
       temperature: 0.8,
     });
 
@@ -55,8 +90,8 @@ Provide:
       });
       
       return NextResponse.json(evaluation, { status: 200 });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      console.log(error);
       const fallbackEvaluation: EvaluationResponse = {
         isCorrect: false,
         explanation: language === 'en' ? 

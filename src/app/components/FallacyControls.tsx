@@ -32,7 +32,7 @@ const FallacyControls = ({
         <button
           className="px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors flex items-center justify-center shadow-sm relative overflow-hidden"
           onClick={handleNext}
-          disabled={!userInput.trim() || isEvaluatingAnswer}
+          disabled={isEvaluatingAnswer}
         >
           {isEvaluatingAnswer ? (
             <span className="flex items-center gap-3 relative z-10">
