@@ -14,7 +14,7 @@ import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 import { FallacyResponse } from '../api/fallacy/route';
 
-const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Default test key
+const RECAPTCHA_SITE_KEY = '6LdfdC8rAAAAAEimne05J5bQe-Zv8_gzO97mDmwr';
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
   const [currentFallacy, setCurrentFallacy] = useState<Fallacy | null>(null);
