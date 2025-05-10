@@ -25,3 +25,8 @@ export interface Fallacy {
   corrected: string;
   id: number;
 }
+
+export interface FallacyMastery {
+  id: string; // This represents the fallacy_type
+  correct: number;
+}

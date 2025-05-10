@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { EvaluationResponse, Fallacy } from '../api/types';
 import type { Dictionary } from '../components/types';
 
@@ -13,62 +13,51 @@ import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 import { FallacyResponse } from '../api/fallacy/route';
 
+import { useAppDispatch, useAppSelector } from '../state/hooks';
+import { 
+  setCurrentFallacy,
+  setUserInput,
+  setShowAnswer,
+  updateScore,
+  incrementStreak,
+  resetStreak,
+  setCorrect,
+  setLoadingFallacy,
+  setEvaluating,
+  setEvaluation,
+  addSeenFallacy,
+  resetSeenFallacies,
+  updateFallacyMastery,
+  resetAnswerState
+} from '../state/slices/fallacyTrainerSlice';
+
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
-  const [currentFallacy, setCurrentFallacy] = useState<Fallacy | null>(null);
-  const [userInput, setUserInput] = useState('');
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [score, setScore] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [isLoadingFallacy, setIsLoadingFallacy] = useState(false);
-  const [isEvaluating, setIsEvaluating] = useState(false);
-  const [evaluation, setEvaluation] = useState<EvaluationResponse | null>(null);
-  const [seenFallacyIds, setSeenFallacyIds] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const { 
+    currentFallacy,
+    userInput,
+    showAnswer,
+    score,
+    streak,
+    isCorrect,
+    isLoadingFallacy,
+    isEvaluating,
+    evaluation,
+    seenFallacyIds,
+    fallacyMasteries
+  } = useAppSelector(state => state.fallacyTrainer);
 
-  // Load stored data from localStorage on component mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedScore = localStorage.getItem('fallacyTrainerScore');
-      const storedStreak = localStorage.getItem('fallacyTrainerStreak');
-      const storedSeenFallacyIds = localStorage.getItem('fallacyTrainerSeenIds');
-      
-      if (storedScore) {
-        setScore(parseInt(storedScore, 10));
-      }
-      
-      if (storedStreak) {
-        setStreak(parseInt(storedStreak, 10));
-      }
-
-      if (storedSeenFallacyIds) {
-        try {
-          const parsedIds = JSON.parse(storedSeenFallacyIds);
-          if (Array.isArray(parsedIds)) {
-            setSeenFallacyIds(parsedIds);
-          }
-        } catch (_) {
-          localStorage.removeItem('fallacyTrainerSeenIds');
-        }
-      }
-    }
-  }, []);
-
-  // Save data to localStorage when values change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('fallacyTrainerScore', score.toString());
-      localStorage.setItem('fallacyTrainerStreak', streak.toString());
-      localStorage.setItem('fallacyTrainerSeenIds', JSON.stringify(seenFallacyIds));
-    }
-  }, [score, streak, seenFallacyIds]);
+  const isFallacyMastered = useCallback((fallacyType: string): boolean => {
+    const masteryRecord = fallacyMasteries.find(m => m.id === fallacyType);
+    return masteryRecord ? masteryRecord.correct >= 3 : false;
+  }, [fallacyMasteries]);
 
   const fetchNextFallacy = useCallback(async (forceReset = false) => {
     try {
-      setIsLoadingFallacy(true);
+      dispatch(setLoadingFallacy(true));
       
-      // Reset seen fallacies if forced or when all fallacies have been seen
       if (forceReset) {
-        setSeenFallacyIds([]);
+        dispatch(resetSeenFallacies());
       }
       
       const excludeParam = seenFallacyIds.length > 0 && !forceReset ? `exclude=${seenFallacyIds.join(',')}` : '';
@@ -83,33 +72,28 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       const data: FallacyResponse = await response.json();
       
       if (data.fallacy) {
-        setCurrentFallacy(data.fallacy);
-        setSeenFallacyIds(prev => [...prev, data.fallacy?.id.toString() || '']);
+        dispatch(setCurrentFallacy(data.fallacy));
+        dispatch(addSeenFallacy(data.fallacy.id.toString()));
       } else if (!forceReset) {
-        // If we get null and haven't reset yet, try again with a reset
         fetchNextFallacy(true);
       } else {
-        // If we've already tried resetting and still get null, there might be an issue
         console.error('No fallacies available after reset');
       }
     } catch (error) {
       console.error('Error fetching fallacy:', error);
     } finally {
-      setIsLoadingFallacy(false);
+      dispatch(setLoadingFallacy(false));
     }
-  }, [seenFallacyIds, lang]);
+  }, [seenFallacyIds, lang, dispatch]);
 
   const loadNextFallacy = useCallback(() => {
     fetchNextFallacy(false);
-    setUserInput('');
-    setShowAnswer(false);
-    setIsCorrect(null);
-    setEvaluation(null);
-  }, [fetchNextFallacy]);
+    dispatch(resetAnswerState());
+  }, [fetchNextFallacy, dispatch]);
 
   const evaluateAnswer = useCallback(async (input: string, fallacy: Fallacy): Promise<EvaluationResponse> => {
     try {
-      setIsEvaluating(true);
+      dispatch(setEvaluating(true));
 
       const response = await fetch('/api/evaluate', {
         method: 'POST',
@@ -141,30 +125,31 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         score: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase() ? 100 : 0
       };
     } finally {
-      setIsEvaluating(false);
+      dispatch(setEvaluating(false));
     }
-  }, []);
+  }, [lang, dispatch]);
 
   const handleNext = useCallback(async () => {
     if (currentFallacy) {
       try {
         const result = await evaluateAnswer(userInput, currentFallacy);
-        setIsCorrect(result.isCorrect);
-        setEvaluation(result);
-
-        setScore(prevScore => prevScore + result.score);
+        dispatch(setCorrect(result.isCorrect));
+        dispatch(setEvaluation(result));
+        dispatch(updateScore(result.score));
+        
         if (result.isCorrect) {
-          setStreak(prevStreak => prevStreak + 1);
+          dispatch(incrementStreak());
+          dispatch(updateFallacyMastery(currentFallacy.fallacy_type));
         } else {
-          setStreak(0);
+          dispatch(resetStreak());
         }
 
-        setShowAnswer(true);
+        dispatch(setShowAnswer(true));
       } catch (error) {
         console.error('Error handling next:', error);
       }
     }
-  }, [userInput, currentFallacy, evaluateAnswer]);
+  }, [userInput, currentFallacy, evaluateAnswer, dispatch]);
 
   const handleSkip = useCallback(() => {
     loadNextFallacy();
@@ -175,9 +160,12 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleInputChange = useCallback((value: string) => {
+    dispatch(setUserInput(value));
+  }, [dispatch]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Skip shortcuts if an input or textarea is focused
       if (document.activeElement?.tagName === 'INPUT' || 
           document.activeElement?.tagName === 'TEXTAREA') {
         return;
@@ -208,12 +196,15 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                 streak={streak}
               />
 
-              <FallacyQuestion fallacy={currentFallacy} />
+              <FallacyQuestion 
+                fallacy={currentFallacy}
+                isMastered={currentFallacy ? isFallacyMastered(currentFallacy.fallacy_type) : false} 
+              />
 
               <div className="space-y-6">
                 <UserInput 
                   userInput={userInput}
-                  setUserInput={setUserInput}
+                  setUserInput={handleInputChange}
                   showAnswer={showAnswer}
                   dictionary={dictionary}
                 />

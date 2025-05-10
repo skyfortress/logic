@@ -1,6 +1,7 @@
 import { i18n } from '@/i18n/settings';
 import './globals.css';
 import Script from 'next/script';
+import { ReduxProvider } from './components/ReduxProvider';
 
 export const metadata = {
   title: 'Logic',
@@ -28,7 +29,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           `}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
+      </body>
     </html>
   );
 }
