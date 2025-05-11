@@ -3,18 +3,15 @@
 import { Dictionary } from './types';
 
 interface MasteryDialogProps {
-  isOpen: boolean;
   onClose: () => void;
   fallacyType: string;
   dictionary: Dictionary;
 }
 
-export default function MasteryDialog({ isOpen, onClose, fallacyType, dictionary }: MasteryDialogProps) {
+export default function MasteryDialog({ onClose, fallacyType, dictionary }: MasteryDialogProps) {
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity ${
-        isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 `}
       onClick={onClose}
     >
       <div 

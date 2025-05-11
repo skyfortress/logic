@@ -53,8 +53,8 @@ export default async function LocaleLayout({
   const { lang } = await params;
   
   return (
-    <html lang={lang}>
-      <body
+
+      <div
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
@@ -62,7 +62,7 @@ export default async function LocaleLayout({
             {children}
           </div>
         </div>
-      </body>
-    </html>
+      </div>
+
   );
 }

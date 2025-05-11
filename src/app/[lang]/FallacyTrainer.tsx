@@ -244,12 +244,12 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         
         <Footer dictionary={dictionary} />
 
+        {isShowingMasteryDialog && (
         <MasteryDialog
-          isOpen={isShowingMasteryDialog}
           onClose={handleCloseMasteryDialog}
           fallacyType={currentFallacy?.fallacy_type || ''}
           dictionary={dictionary}
-        />
+        />)}
       </>
   );
 }

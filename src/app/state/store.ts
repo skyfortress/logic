@@ -14,7 +14,10 @@ const loadState = (): Partial<RootState> => {
     if (!serializedState) {
       return {};
     }
-    return JSON.parse(serializedState);
+    const state = JSON.parse(serializedState);
+    state.fallacyTrainer.currentFallacy = null;
+    return state;
+
   } catch (err) {
     return {};
   }
