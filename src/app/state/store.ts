@@ -16,6 +16,7 @@ const loadState = (): Partial<RootState> => {
     }
     const state = JSON.parse(serializedState);
     state.fallacyTrainer.currentFallacy = null;
+    state.fallacyTrainer.showMasteryDialog = false;
     return state;
 
   } catch (err) {
