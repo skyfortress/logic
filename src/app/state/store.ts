@@ -37,7 +37,7 @@ const preloadedState = loadState();
 
 export const store = configureStore({
   reducer: {
-    fallacyTrainer: fallacyTrainerReducer
+    fallacyTrainer: fallacyTrainerReducer as any
   },
   preloadedState
 });

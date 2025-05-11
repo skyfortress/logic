@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FallacyTrainerState } from '../types';
-import { EvaluationResponse, Fallacy } from '../../api/types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { FallacyTrainerState } from "../types";
+import { EvaluationResponse, Fallacy } from "../../api/types";
 
 const initialState: FallacyTrainerState = {
   currentFallacy: null,
-  userInput: '',
+  userInput: "",
   showAnswer: false,
   score: 0,
   streak: 0,
@@ -13,11 +13,12 @@ const initialState: FallacyTrainerState = {
   isEvaluating: false,
   evaluation: null,
   seenFallacyIds: [],
-  fallacyMasteries: []
+  fallacyMasteries: {},
+  showMasteryDialog: false,
 };
 
 export const fallacyTrainerSlice = createSlice({
-  name: 'fallacyTrainer',
+  name: "fallacyTrainer",
   initialState,
   reducers: {
     setCurrentFallacy(state, action: PayloadAction<Fallacy | null>) {
@@ -61,28 +62,36 @@ export const fallacyTrainerSlice = createSlice({
     },
     updateFallacyMastery(state, action: PayloadAction<string>) {
       const fallacyType = action.payload;
-      const existingIndex = state.fallacyMasteries.findIndex(m => m.id === fallacyType);
-      
-      if (existingIndex >= 0) {
-        state.fallacyMasteries[existingIndex].correct += 1;
-      } else {
-        state.fallacyMasteries.push({ id: fallacyType, correct: 1 });
+
+      if (!state.fallacyMasteries[fallacyType]) {
+        state.fallacyMasteries[fallacyType] = 0;
+      }
+      state.fallacyMasteries[fallacyType] += 1;
+
+      if (state.fallacyMasteries[fallacyType] == 1) {
+        state.showMasteryDialog = true;
       }
     },
     resetAnswerState(state) {
-      state.userInput = '';
+      state.userInput = "";
       state.showAnswer = false;
       state.isCorrect = null;
       state.evaluation = null;
     },
+    showMasteryDialog(state, action: PayloadAction<Fallacy>) {
+      state.showMasteryDialog = true;
+    },
+    hideMasteryDialog(state) {
+      state.showMasteryDialog = false;
+    },
     hydrateState(state, action: PayloadAction<FallacyTrainerState>) {
       return { ...state, ...action.payload };
-    }
-  }
+    },
+  },
 });
 
-export const { 
-  setCurrentFallacy, 
+export const {
+  setCurrentFallacy,
   setUserInput,
   setShowAnswer,
   updateScore,
@@ -97,7 +106,9 @@ export const {
   resetSeenFallacies,
   updateFallacyMastery,
   resetAnswerState,
-  hydrateState
+  showMasteryDialog,
+  hideMasteryDialog,
+  hydrateState,
 } = fallacyTrainerSlice.actions;
 
 export default fallacyTrainerSlice.reducer;

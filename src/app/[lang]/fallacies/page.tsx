@@ -1,7 +1,7 @@
 import { getDictionary } from '@/i18n/dictionary';
 import type { Locale } from '@/i18n/settings';
-import generalDataEn from './general-data-en.json';
-import generalDataUa from './general-data-ua.json';
+import generalDataEn from './fallacies-en.json';
+import generalDataUa from './fallacies-ua.json'
 import { Metadata } from 'next';
 
 export async function generateMetadata({ 

@@ -11,6 +11,7 @@ import FallacyControls from '../components/FallacyControls';
 import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
+import MasteryDialog from '../components/MasteryDialog';
 import { FallacyResponse } from '../api/fallacy/route';
 
 import { useAppDispatch, useAppSelector } from '../state/hooks';
@@ -28,11 +29,14 @@ import {
   addSeenFallacy,
   resetSeenFallacies,
   updateFallacyMastery,
-  resetAnswerState
+  resetAnswerState,
+  showMasteryDialog,
+  hideMasteryDialog
 } from '../state/slices/fallacyTrainerSlice';
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
   const dispatch = useAppDispatch();
+  
   const { 
     currentFallacy,
     userInput,
@@ -44,13 +48,13 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     isEvaluating,
     evaluation,
     seenFallacyIds,
-    fallacyMasteries
+    fallacyMasteries,
+    showMasteryDialog: isShowingMasteryDialog,
   } = useAppSelector(state => state.fallacyTrainer);
 
-  const isFallacyMastered = useCallback((fallacyType: string): boolean => {
-    const masteryRecord = fallacyMasteries.find(m => m.id === fallacyType);
-    return masteryRecord ? masteryRecord.correct >= 3 : false;
-  }, [fallacyMasteries]);
+  const isFallacyMastered = (fallacyType: string): boolean => {
+    return (fallacyMasteries[fallacyType] || 0) == 1;
+  }
 
   const fetchNextFallacy = useCallback(async (forceReset = false) => {
     try {
@@ -103,7 +107,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         body: JSON.stringify({
           userInput: input,
           correctAnswer: fallacy.fallacy_type,
-          fallacyDescription: fallacy.explanation,
           fallacyType: fallacy.fallacy_type,
           fallacyExample: fallacy.text,
           language: lang,
@@ -139,7 +142,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         
         if (result.isCorrect) {
           dispatch(incrementStreak());
-          dispatch(updateFallacyMastery(currentFallacy.fallacy_type));
+          const fallacyType = currentFallacy.fallacy_type;
+          dispatch(updateFallacyMastery(fallacyType));
         } else {
           dispatch(resetStreak());
         }
@@ -149,15 +153,18 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         console.error('Error handling next:', error);
       }
     }
-  }, [userInput, currentFallacy, evaluateAnswer, dispatch]);
+  }, [userInput, currentFallacy, evaluateAnswer, dispatch, fallacyMasteries]);
 
   const handleSkip = useCallback(() => {
     loadNextFallacy();
   }, [loadNextFallacy]);
 
+  const handleCloseMasteryDialog = useCallback(() => {
+    dispatch(hideMasteryDialog());
+  }, [dispatch]);
+
   useEffect(() => {
     loadNextFallacy();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = useCallback((value: string) => {
@@ -199,6 +206,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
               <FallacyQuestion 
                 fallacy={currentFallacy}
                 isMastered={currentFallacy ? isFallacyMastered(currentFallacy.fallacy_type) : false} 
+                dictionary={dictionary}
               />
 
               <div className="space-y-6">
@@ -235,6 +243,13 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         )}
         
         <Footer dictionary={dictionary} />
+
+        <MasteryDialog
+          isOpen={isShowingMasteryDialog}
+          onClose={handleCloseMasteryDialog}
+          fallacyType={currentFallacy?.fallacy_type || ''}
+          dictionary={dictionary}
+        />
       </>
   );
 }

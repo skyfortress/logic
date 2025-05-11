@@ -22,6 +22,9 @@ export interface Dictionary {
   yourAnswer: string;
   copyright: string;
   evaluating: string;
+  masteryAchieved: string;
+  masteryMessage: string;
+  continue: string;
   fallaciesList?: {
     title: string;
     description: string;

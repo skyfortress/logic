@@ -22,6 +22,9 @@
   "yourAnswer": "You Said:",
   "copyright": "© 2025 Logical Fallacy Trainer – Become a sharper thinker, one argument at a time.",
   "evaluating": "Thinking...",
+  "masteryAchieved": "Mastery Achieved!",
+  "masteryMessage": "You've mastered the {fallacyName} fallacy. Congratulations!",
+  "continue": "Continue",
   "fallaciesList": {
     "title": "Fallacy Library",
     "description": "Explore and learn the tricks behind faulty reasoning.",

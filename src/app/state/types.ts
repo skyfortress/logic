@@ -1,4 +1,4 @@
-import { EvaluationResponse, Fallacy, FallacyMastery } from '../api/types';
+import { EvaluationResponse, Fallacy } from '../api/types';
 
 export interface FallacyTrainerState {
   currentFallacy: Fallacy | null;
@@ -11,7 +11,8 @@ export interface FallacyTrainerState {
   isEvaluating: boolean;
   evaluation: EvaluationResponse | null;
   seenFallacyIds: string[];
-  fallacyMasteries: FallacyMastery[];
+  fallacyMasteries: {[type: string]: number};
+  showMasteryDialog: boolean;
 }
 
 export interface RootState {
