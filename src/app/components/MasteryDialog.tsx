@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import ConfettiExplosion from "react-confetti-blast";
 import { Dictionary } from './types';
+import Button from './Button';
 
 interface MasteryDialogProps {
   onClose: () => void;
@@ -69,12 +70,12 @@ export default function MasteryDialog({ onClose, fallacyType, dictionary }: Mast
           <p className="text-lg mb-4 text-slate-700">
             {dictionary.masteryMessage.replace('{fallacyName}', fallacyType)}
           </p>
-          <button
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+          <Button
+            variant="primary"
             onClick={onClose}
           >
             {dictionary.continue}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

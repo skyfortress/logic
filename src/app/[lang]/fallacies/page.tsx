@@ -3,6 +3,8 @@ import type { Locale } from '@/i18n/settings';
 import generalDataEn from './fallacies-en.json';
 import generalDataUa from './fallacies-ua.json'
 import { Metadata } from 'next';
+import Link from 'next/link';
+import Button from '@/app/components/Button';
 
 export async function generateMetadata({ 
   params 
@@ -26,13 +28,17 @@ export default async function FallaciesPage({ params }: { params: Promise<{ lang
   return (
     <>
         <header className="mb-10">
-            <h1 className="text-3xl font-bold mb-2">{dictionary.fallaciesList?.title || 'Logical Fallacies'}</h1>
-            <p className="text-slate-600">{dictionary.fallaciesList?.description || 'A comprehensive list of logical fallacies and their descriptions.'}</p>
+            <h1 className="text-3xl font-bold mb-2">{dictionary.fallaciesList?.title}</h1>
+            <p className="text-slate-600">{dictionary.fallaciesList?.description}</p>
         </header>
 
-        <a href={`/${lang}`} className="inline-flex items-center text-blue-600 mb-8 hover:underline">
-            ← {dictionary.backToTrainer || 'Back to Trainer'}
-        </a>
+        <div className="mb-8">
+            <Link href={`/${lang}`}>
+                <Button variant="secondary">
+                    ← {dictionary.backToTrainer}
+                </Button>
+            </Link>
+        </div>
         
         <div className="space-y-6">
             {fallacyData.map((fallacy, index) => (
@@ -44,17 +50,17 @@ export default async function FallaciesPage({ params }: { params: Promise<{ lang
                 </div>
                 
                 <div className="mb-4">
-                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.fallaciesList?.example || 'Example'}</h3>
+                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.fallaciesList?.example}</h3>
                 <p className="text-slate-700 bg-blue-50 p-3 rounded-md border-l-4 border-blue-400">{fallacy.example}</p>
                 </div>
                 
                 <div className="mb-4">
-                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.fallaciesList?.explanation || 'Explanation'}</h3>
+                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.fallaciesList?.explanation}</h3>
                 <p className="text-slate-700">{fallacy.explanation}</p>
                 </div>
 
                 <div>
-                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.correctedArgument || 'Corrected'}</h3>
+                <h3 className="text-sm font-medium text-slate-600 mb-1">{dictionary.correctedArgument}</h3>
                 <p className="text-slate-700 text-sm">{fallacy.correctedExample}</p>
                 </div>
             </div>

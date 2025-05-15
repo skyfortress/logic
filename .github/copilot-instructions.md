@@ -8,3 +8,4 @@ don't create unused types.
 don't create one line IFs, always use braces
 make sure you keep separation of concerns
 don't use any always try to use proper types
+don't use default values for localization messages, instead add proper localization into messages/en/index.json and messages/ua/index.json

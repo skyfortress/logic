@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dictionary } from './types';
+import Button from './Button';
 
 const FallacyControls = ({ 
   showAnswer, 
@@ -22,17 +23,18 @@ const FallacyControls = ({
   isLoadingFallacy?: boolean;
   isEvaluating?: boolean;
 }) => {
-  // For backward compatibility, use combined isLoading if specific states aren't provided
   const isLoadingData = isLoadingFallacy ?? isLoading;
   const isEvaluatingAnswer = isEvaluating ?? isLoading;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-between">
       {!showAnswer ? (
-        <button
-          className="px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors flex items-center justify-center shadow-sm relative overflow-hidden"
+        <Button
+          variant="primary"
+          size="lg"
           onClick={handleNext}
           disabled={isEvaluatingAnswer}
+          className="relative overflow-hidden"
         >
           {isEvaluatingAnswer ? (
             <span className="flex items-center gap-3 relative z-10">
@@ -46,24 +48,26 @@ const FallacyControls = ({
           ) : (
             <span>{dictionary.checkAnswer}</span>
           )}
-        </button>
+        </Button>
       ) : (
-        <button
-          className="px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors flex items-center justify-center shadow-sm"
+        <Button
+          variant="primary"
+          size="lg"
           onClick={loadNextFallacy}
           disabled={isLoadingData}
         >
           <span>{dictionary.nextFallacy}</span>
-        </button>
+        </Button>
       )}
       {!showAnswer && (
-        <button
-          className="px-5 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors border border-slate-200 shadow-sm"
+        <Button
+          variant="secondary"
+          size="lg"
           onClick={handleSkip}
           disabled={isLoadingData || isEvaluatingAnswer}
         >
           {dictionary.skip}
-        </button>
+        </Button>
       )}
     </div>
   );

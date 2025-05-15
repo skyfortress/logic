@@ -43,6 +43,23 @@
     "defaultTitle": "Learn Logical Fallacies | Logic trainer",
     "fallaciesListTitle": "List of Logical Fallacies",
     "fallaciesListDescription": "Complete list of common logical fallacies with examples and explanations. Learn how to identify flaws in reasoning and argumentation.",
-    "fallaciesListKeywords": "logical fallacies, fallacy list, reasoning errors, critical thinking, types of fallacies"
+    "fallaciesListKeywords": "logical fallacies, fallacy list, reasoning errors, critical thinking, types of fallacies",
+    "masteryDashboardTitle": "Mastery Dashboard",
+    "masteryDashboardDescription": "Track your progress in mastering logical fallacies and reasoning skills."
+  },
+  "masteryDashboard": {
+    "title": "Mastery Dashboard",
+    "subtitle": "Track your progress in mastering logical fallacies",
+    "totalFallacies": "Total Fallacies",
+    "masteredFallacies": "Mastered",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity. Start practicing to see your progress!",
+    "masteryLevel": "Mastery Level",
+    "overallProgress": "Overall Progress",
+    "weakestFallacies": "Areas to Improve",
+    "strongestFallacies": "Your Strengths",
+    "backToTraining": "Back to Training"
   }
 }

@@ -31,4 +31,19 @@ export interface Dictionary {
     example: string;
     explanation: string;
   };
+  masteryDashboard?: {
+    title: string;
+    subtitle: string;
+    totalFallacies: string;
+    masteredFallacies: string;
+    inProgress: string;
+    notStarted: string;
+    recentActivity: string;
+    noActivity: string;
+    masteryLevel: string;
+    overallProgress: string;
+    weakestFallacies: string;
+    strongestFallacies: string;
+    backToTraining: string;
+  };
 }
