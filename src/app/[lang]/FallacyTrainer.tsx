@@ -31,7 +31,8 @@ import {
   updateFallacyMastery,
   resetAnswerState,
   showMasteryDialog,
-  hideMasteryDialog
+  hideMasteryDialog,
+  endCurrentSession
 } from '../state/slices/fallacyTrainerSlice';
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
@@ -153,7 +154,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         console.error('Error handling next:', error);
       }
     }
-  }, [userInput, currentFallacy, evaluateAnswer, dispatch, fallacyMasteries]);
+  }, [userInput, currentFallacy, evaluateAnswer, dispatch]);
 
   const handleSkip = useCallback(() => {
     loadNextFallacy();
@@ -165,6 +166,10 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
 
   useEffect(() => {
     loadNextFallacy();
+    
+    return () => {
+      dispatch(endCurrentSession());
+    };
   }, []);
 
   const handleInputChange = useCallback((value: string) => {
@@ -190,6 +195,17 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [userInput, showAnswer, isLoadingFallacy, isEvaluating, handleNext, loadNextFallacy]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      dispatch(endCurrentSession());
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [dispatch]);
 
   return (<>
         <Header dictionary={dictionary} lang={lang} />

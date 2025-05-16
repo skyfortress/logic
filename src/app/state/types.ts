@@ -1,5 +1,11 @@
 import { EvaluationResponse, Fallacy } from '../api/types';
 
+export interface SessionActivity {
+  date: string; // ISO string
+  duration: number; // in seconds
+  points: number;
+}
+
 export interface FallacyTrainerState {
   currentFallacy: Fallacy | null;
   userInput: string;
@@ -13,6 +19,11 @@ export interface FallacyTrainerState {
   seenFallacyIds: string[];
   fallacyMasteries: {[type: string]: number};
   showMasteryDialog: boolean;
+  sessionActivity: SessionActivity[];
+  currentSession: {
+    startTime: string | null; // ISO string
+    points: number;
+  };
 }
 
 export interface RootState {

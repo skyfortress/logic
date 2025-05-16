@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FallacyTrainerState } from "../types";
+import { FallacyTrainerState, SessionActivity } from "../types";
 import { EvaluationResponse, Fallacy } from "../../api/types";
 
 const initialState: FallacyTrainerState = {
@@ -15,6 +15,11 @@ const initialState: FallacyTrainerState = {
   seenFallacyIds: [],
   fallacyMasteries: {},
   showMasteryDialog: false,
+  sessionActivity: [],
+  currentSession: {
+    startTime: null,
+    points: 0,
+  },
 };
 
 export const fallacyTrainerSlice = createSlice({
@@ -23,6 +28,12 @@ export const fallacyTrainerSlice = createSlice({
   reducers: {
     setCurrentFallacy(state, action: PayloadAction<Fallacy | null>) {
       state.currentFallacy = action.payload;
+      
+      // Start a new session if one is not already in progress
+      if (!state.currentSession.startTime && action.payload) {
+        state.currentSession.startTime = new Date().toISOString();
+        state.currentSession.points = 0;
+      }
     },
     setUserInput(state, action: PayloadAction<string>) {
       state.userInput = action.payload;
@@ -32,6 +43,10 @@ export const fallacyTrainerSlice = createSlice({
     },
     updateScore(state, action: PayloadAction<number>) {
       state.score += action.payload;
+      // Track points earned in the current session
+      if (state.currentSession.startTime) {
+        state.currentSession.points += action.payload;
+      }
     },
     setStreak(state, action: PayloadAction<number>) {
       state.streak = action.payload;
@@ -84,6 +99,27 @@ export const fallacyTrainerSlice = createSlice({
     hideMasteryDialog(state) {
       state.showMasteryDialog = false;
     },
+    endCurrentSession(state) {
+      if (state.currentSession.startTime) {
+        const startTime = new Date(state.currentSession.startTime);
+        const endTime = new Date();
+        const durationInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
+        
+        // Add the session to activity history
+        const newActivity: SessionActivity = {
+          date: state.currentSession.startTime,
+          duration: durationInSeconds,
+          points: state.currentSession.points,
+        };
+        
+        // Keep last 10 sessions for history
+        state.sessionActivity = [newActivity, ...state.sessionActivity].slice(0, 10);
+        
+        // Reset current session
+        state.currentSession.startTime = null;
+        state.currentSession.points = 0;
+      }
+    },
     hydrateState(state, action: PayloadAction<FallacyTrainerState>) {
       return { ...state, ...action.payload };
     },
@@ -108,6 +144,7 @@ export const {
   resetAnswerState,
   showMasteryDialog,
   hideMasteryDialog,
+  endCurrentSession,
   hydrateState,
 } = fallacyTrainerSlice.actions;
 

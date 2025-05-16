@@ -61,6 +61,12 @@
     "weakestFallacies": "Області для покращення",
     "strongestFallacies": "Ваші сильні сторони",
     "backToTraining": "Повернутися до тренування",
-    "totalPoints": "Загальна кількість балів"
+    "totalPoints": "Загальна кількість балів",
+    "sessionActivity": {
+      "lastSession": "Останній сеанс:",
+      "duration": "Тривалість:",
+      "points": "Зароблені бали:",
+      "history": "Історія"
+    }
   }
 }

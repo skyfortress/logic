@@ -25,13 +25,13 @@ export interface Dictionary {
   masteryAchieved: string;
   masteryMessage: string;
   continue: string;
-  fallaciesList?: {
+  fallaciesList: {
     title: string;
     description: string;
     example: string;
     explanation: string;
   };
-  masteryDashboard?: {
+  masteryDashboard: {
     title: string;
     subtitle: string;
     totalFallacies: string;
@@ -45,5 +45,12 @@ export interface Dictionary {
     weakestFallacies: string;
     strongestFallacies: string;
     backToTraining: string;
+    totalPoints: string;
+    sessionActivity: {
+      lastSession: string;
+      duration: string;
+      points: string;
+      history: string;
+    };
   };
 }

@@ -61,6 +61,12 @@
     "weakestFallacies": "Areas to Improve",
     "strongestFallacies": "Your Strengths",
     "backToTraining": "Back to Training",
-    "totalPoints": "Total Points Earned"
+    "totalPoints": "Total Points Earned",
+    "sessionActivity": {
+      "lastSession": "Last session:",
+      "duration": "Duration:",
+      "points": "Points earned:",
+      "history": "History"
+    }
   }
 }

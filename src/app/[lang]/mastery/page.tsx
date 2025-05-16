@@ -4,6 +4,7 @@ import { getDictionary } from '@/i18n/dictionary';
 import Link from 'next/link';
 import Button from '@/app/components/Button';
 import MasteryLevel from '@/app/components/MasteryLevel';
+import { SessionActivity } from '@/app/components/SessionActivity';
 
 export async function generateMetadata({ 
   params 
@@ -69,9 +70,7 @@ export default async function MasteryDashboard({ params }: { params: Promise<{ l
           <h2 className="font-semibold text-lg text-sky-800 mb-4">
             {masteryDashboard.recentActivity}
           </h2>
-          <div className="text-gray-500 text-center py-8">
-            {masteryDashboard.noActivity}
-          </div>
+          <SessionActivity dictionary={dictionary} lang={lang} />
         </div>
       </div>
       
