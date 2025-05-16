@@ -60,6 +60,7 @@
     "overallProgress": "Загальний прогрес",
     "weakestFallacies": "Області для покращення",
     "strongestFallacies": "Ваші сильні сторони",
-    "backToTraining": "Повернутися до тренування"
+    "backToTraining": "Повернутися до тренування",
+    "totalPoints": "Загальна кількість балів"
   }
 }

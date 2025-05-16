@@ -60,6 +60,7 @@
     "overallProgress": "Overall Progress",
     "weakestFallacies": "Areas to Improve",
     "strongestFallacies": "Your Strengths",
-    "backToTraining": "Back to Training"
+    "backToTraining": "Back to Training",
+    "totalPoints": "Total Points Earned"
   }
 }

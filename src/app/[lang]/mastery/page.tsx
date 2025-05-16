@@ -3,6 +3,7 @@ import { Locale } from '@/i18n/settings';
 import { getDictionary } from '@/i18n/dictionary';
 import Link from 'next/link';
 import Button from '@/app/components/Button';
+import MasteryLevel from '@/app/components/MasteryLevel';
 
 export async function generateMetadata({ 
   params 
@@ -59,14 +60,10 @@ export default async function MasteryDashboard({ params }: { params: Promise<{ l
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="font-semibold text-lg text-sky-800 mb-4">
-            {masteryDashboard.masteryLevel}
-          </h2>
-          <div className="flex items-center justify-center h-32">
-            <div className="text-6xl font-mono text-sky-700">0%</div>
-          </div>
-        </div>
+        <MasteryLevel 
+          title={masteryDashboard.masteryLevel}
+          totalPointsLabel={masteryDashboard.totalPoints}
+        />
         
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="font-semibold text-lg text-sky-800 mb-4">
