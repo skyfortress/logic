@@ -62,6 +62,11 @@
     "strongestFallacies": "Your Strengths",
     "backToTraining": "Back to Training",
     "totalPoints": "Total Points Earned",
+    "seenTasks": "Tasks Seen",
+    "correctAnswers": "Correct Answers",
+    "incorrectAnswers": "Wrong Answers",
+    "correctPercentage": "Percentage Correct",
+    "performanceStats": "Performance Statistics",
     "sessionActivity": {
       "lastSession": "Last session:",
       "duration": "Duration:",

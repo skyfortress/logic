@@ -62,6 +62,11 @@
     "strongestFallacies": "Ваші сильні сторони",
     "backToTraining": "Повернутися до тренування",
     "totalPoints": "Загальна кількість балів",
+    "seenTasks": "Завдання переглянуто",
+    "correctAnswers": "Правильних відповідей",
+    "incorrectAnswers": "Неправильних відповідей",
+    "correctPercentage": "Відсоток правильних",
+    "performanceStats": "Статистика продуктивності",
     "sessionActivity": {
       "lastSession": "Останній сеанс:",
       "duration": "Тривалість:",
