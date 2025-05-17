@@ -52,5 +52,12 @@ export interface Dictionary {
       points: string;
       history: string;
     };
+    "achievements": string;
+    "noAchievements": string;
+    "masterBadge": string;
+    "progress": string;
+    "remaining": string;
+    "completed": string;
+    "locked": string;
   };
 }

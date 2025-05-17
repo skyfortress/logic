@@ -72,6 +72,13 @@
       "duration": "Duration:",
       "points": "Points earned:",
       "history": "History"
-    }
+    },
+    "achievements": "Logic Achievements",
+    "noAchievements": "No achievements yet. Start identifying fallacies to unlock them!",
+    "masterBadge": "MASTERED",
+    "progress": "Progress",
+    "remaining": "{count} more to master",
+    "completed": "Achievement Unlocked!",
+    "locked": "Locked"
   }
 }

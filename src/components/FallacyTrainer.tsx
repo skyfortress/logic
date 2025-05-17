@@ -28,7 +28,8 @@ import {
   resetAnswerState,
   showMasteryDialog,
   hideMasteryDialog,
-  endCurrentSession
+  endCurrentSession,
+  MASERY_COUNT
 } from '../state/slices/fallacyTrainerSlice';
 import { FallacyResponse } from '@/pages/api/fallacy';
 import { Fallacy, EvaluationResponse } from '@/pages/api/types';
@@ -52,7 +53,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   } = useAppSelector(state => state.fallacyTrainer);
 
   const isFallacyMastered = (fallacyType: string): boolean => {
-    return (fallacyMasteries[fallacyType] || 0) == 1;
+    return (fallacyMasteries[fallacyType] || 0) >= MASERY_COUNT;
   }
 
   const fetchNextFallacy = useCallback(async (forceReset = false) => {

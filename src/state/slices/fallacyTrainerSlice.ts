@@ -22,6 +22,8 @@ const initialState: FallacyTrainerState = {
   },
 };
 
+export const MASERY_COUNT = 3
+
 export const fallacyTrainerSlice = createSlice({
   name: "fallacyTrainer",
   initialState,
@@ -85,7 +87,7 @@ export const fallacyTrainerSlice = createSlice({
       }
       state.fallacyMasteries[fallacyType] += 1;
 
-      if (state.fallacyMasteries[fallacyType] == 1) {
+      if (state.fallacyMasteries[fallacyType] == MASERY_COUNT) {
         state.showMasteryDialog = true;
       }
     },
