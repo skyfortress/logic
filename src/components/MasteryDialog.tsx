@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import ConfettiExplosion from "react-confetti-blast";
 import { Dictionary } from './types';

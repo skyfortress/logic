@@ -1,5 +1,5 @@
 import React from 'react';
-import { EvaluationResponse } from '../api/types';
+import { EvaluationResponse } from '../pages/api/types';
 
 const FallacyResult = ({ 
   isCorrect, 

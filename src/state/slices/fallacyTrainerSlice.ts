@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FallacyTrainerState, SessionActivity } from "../types";
-import { EvaluationResponse, Fallacy } from "../../api/types";
+import { EvaluationResponse, Fallacy } from "../../pages/api/types";
 
 const initialState: FallacyTrainerState = {
   currentFallacy: null,
@@ -30,9 +30,11 @@ export const fallacyTrainerSlice = createSlice({
       state.currentFallacy = action.payload;
       
       // Start a new session if one is not already in progress
-      if (!state.currentSession.startTime && action.payload) {
-        state.currentSession.startTime = new Date().toISOString();
-        state.currentSession.points = 0;
+      if (!state.currentSession?.startTime && action.payload) {
+        state.currentSession = {
+            startTime: new Date().toISOString(),
+            points: 0
+        };
       }
     },
     setUserInput(state, action: PayloadAction<string>) {
@@ -44,7 +46,7 @@ export const fallacyTrainerSlice = createSlice({
     updateScore(state, action: PayloadAction<number>) {
       state.score += action.payload;
       // Track points earned in the current session
-      if (state.currentSession.startTime) {
+      if (state.currentSession?.startTime) {
         state.currentSession.points += action.payload;
       }
     },
@@ -100,7 +102,7 @@ export const fallacyTrainerSlice = createSlice({
       state.showMasteryDialog = false;
     },
     endCurrentSession(state) {
-      if (state.currentSession.startTime) {
+      if (state.currentSession?.startTime) {
         const startTime = new Date(state.currentSession.startTime);
         const endTime = new Date();
         const durationInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
@@ -113,7 +115,7 @@ export const fallacyTrainerSlice = createSlice({
         };
         
         // Keep last 10 sessions for history
-        state.sessionActivity = [newActivity, ...state.sessionActivity].slice(0, 10);
+        state.sessionActivity = [newActivity, ...(state.sessionActivity || [])];
         
         // Reset current session
         state.currentSession.startTime = null;

@@ -1,5 +1,3 @@
-'use client';
-
 import { useAppSelector } from '../state/hooks';
 import { Dictionary } from './types';
 import { formatDistanceToNow, formatDuration as fnsFormatDuration } from 'date-fns';

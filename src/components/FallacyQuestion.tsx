@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fallacy } from '../api/types';
+import { Fallacy } from '../pages/api/types';
 import { Dictionary } from './types';
 
 interface FallacyQuestionProps {

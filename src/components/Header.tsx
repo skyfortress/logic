@@ -41,7 +41,7 @@ const Header = ({ dictionary, lang }: { dictionary: Dictionary, lang?: string })
         </Link>
       </div>
     </div>
-    <h1 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-2 md:mb-3">
+    <h1 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-2 pt-4 md:mb-3">
       {dictionary.title}
     </h1>
     <p className="text-slate-600 max-w-2xl mx-auto text-sm md:text-base">

@@ -1,4 +1,3 @@
-import 'server-only';
 import type { Locale } from './settings';
 
 // We need to use a dynamic import here because these JSON files are generated

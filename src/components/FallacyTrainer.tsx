@@ -1,7 +1,4 @@
-'use client';
-
 import { useEffect, useCallback } from 'react';
-import { EvaluationResponse, Fallacy } from '../api/types';
 import type { Dictionary } from '../components/types';
 
 import Header from '../components/Header';
@@ -12,7 +9,6 @@ import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 import MasteryDialog from '../components/MasteryDialog';
-import { FallacyResponse } from '../api/fallacy/route';
 
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { 
@@ -34,6 +30,8 @@ import {
   hideMasteryDialog,
   endCurrentSession
 } from '../state/slices/fallacyTrainerSlice';
+import { FallacyResponse } from '@/pages/api/fallacy';
+import { Fallacy, EvaluationResponse } from '@/pages/api/types';
 
 export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dictionary; lang: string }) {
   const dispatch = useAppDispatch();

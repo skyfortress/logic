@@ -1,12 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { EvaluationRequest, EvaluationResponse, EvaluationResponseSchema } from '../types';
+import { EvaluationRequest, EvaluationResponse, EvaluationResponseSchema } from './types';
 import { StructuredOutputParser } from '@langchain/core/output_parsers';
 import { ChatDeepSeek } from '@langchain/deepseek';
 
-export async function POST(request: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+  
   try {
-    const body: EvaluationRequest = await request.json();
+    const body: EvaluationRequest = req.body;
     const { userInput, fallacyType, fallacyExample, language } = body;
 
     const model = new ChatDeepSeek({
@@ -33,7 +37,6 @@ Provide:
 Fallacy information for context:
 "${fallacyExample}"
 `
-console.log(prompt)
 
     const evaluationPrompt = ChatPromptTemplate.fromMessages([
       ['system', prompt],
@@ -48,7 +51,7 @@ console.log(prompt)
         format_instructions: parser.getFormatInstructions(),
       });
       
-      return NextResponse.json(evaluation, { status: 200 });
+      return res.status(200).json(evaluation);
     } catch (error) {
       console.log(error);
       const fallbackEvaluation: EvaluationResponse = {
@@ -58,13 +61,12 @@ console.log(prompt)
           "Ой! Наші логічні схеми заплутались. Спробуйте ще раз - навіть Аристотель мав погані дні!",
         score: 30
       };
-      return NextResponse.json(fallbackEvaluation, { status: 200 });
+      return res.status(200).json(fallbackEvaluation);
     }
   } catch (error) {
     console.error('Error in evaluation API:', error);
-    return NextResponse.json(
-      { error: 'Our fallacy detector is taking a philosophical break. Try again!' },
-      { status: 500 }
-    );
+    return res.status(500).json({
+      error: 'Our fallacy detector is taking a philosophical break. Try again!'
+    });
   }
 }

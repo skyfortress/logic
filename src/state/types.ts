@@ -1,4 +1,4 @@
-import { EvaluationResponse, Fallacy } from '../api/types';
+import { EvaluationResponse, Fallacy } from '../pages/api/types';
 
 export interface SessionActivity {
   date: string; // ISO string
@@ -20,7 +20,7 @@ export interface FallacyTrainerState {
   fallacyMasteries: {[type: string]: number};
   showMasteryDialog: boolean;
   sessionActivity: SessionActivity[];
-  currentSession: {
+  currentSession?: {
     startTime: string | null; // ISO string
     points: number;
   };
