@@ -26,7 +26,7 @@ const initialState: FallacyTrainerState = {
 };
 
 export const MASERY_COUNT = 3;
-export const QUESTIONS_IN_SESSION = 3;
+export const QUESTIONS_IN_SESSION = 10;
 
 export const fallacyTrainerSlice = createSlice({
   name: "fallacyTrainer",
