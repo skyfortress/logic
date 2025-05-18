@@ -4,12 +4,63 @@ import { EvaluationRequest, EvaluationResponse, EvaluationResponseSchema } from 
 import { StructuredOutputParser } from '@langchain/core/output_parsers';
 import { ChatDeepSeek } from '@langchain/deepseek';
 
+interface RateLimitEntry {
+  count: number;
+  resetTime: number;
+}
+
+interface RateLimitResult {
+  isLimited: boolean;
+  retryAfter?: number;
+}
+
+const rateLimiter = new Map<string, RateLimitEntry>();
+const RATE_LIMIT = 50;
+const RATE_LIMIT_WINDOW = 60 * 1000;
+
+function checkRateLimit(clientId: string): RateLimitResult {
+  const now = Date.now();
+  const rateLimit = rateLimiter.get(clientId);
+  
+  if (rateLimit && now < rateLimit.resetTime) {
+    if (rateLimit.count >= RATE_LIMIT) {
+      return { 
+        isLimited: true, 
+        retryAfter: Math.ceil((rateLimit.resetTime - now) / 1000) 
+      };
+    }
+    
+    rateLimiter.set(clientId, { 
+      count: rateLimit.count + 1, 
+      resetTime: rateLimit.resetTime 
+    });
+  } else {
+    rateLimiter.set(clientId, { 
+      count: 1, 
+      resetTime: now + RATE_LIMIT_WINDOW 
+    });
+  }
+  
+  return { isLimited: false };
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
   
   try {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    const clientId = typeof ip === 'string' ? ip : ip[0];
+    
+    const rateLimitResult = checkRateLimit(clientId);
+    if (rateLimitResult.isLimited) {
+      return res.status(429).json({ 
+        error: 'Too many requests. Please try again later.',
+        retryAfter: rateLimitResult.retryAfter
+      });
+    }
+
     const body: EvaluationRequest = req.body;
     const { userInput, fallacyType, fallacyExample, language } = body;
 
