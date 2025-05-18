@@ -65,23 +65,26 @@ const FallacyResult = ({
           </div>
         </div>
       )}
-
-      <div className="bg-white p-4 rounded-lg border border-slate-200">
-        <h4 className="text-sm font-medium text-slate-600 mb-2">
-          {dictionary.fallacyType || "Fallacy Type"}
-        </h4>
-        <p className="text-slate-700 font-semibold">
-          {currentFallacy.fallacy_type}
-        </p>
-      </div>
-      <div>
-        <h4 className="text-sm font-medium text-slate-600 mb-1">
-          {dictionary.correctedArgument}
-        </h4>
-        <p className="text-slate-700">
-          {currentFallacy.corrected}
-        </p>
-      </div>
+      {currentFallacy.fallacy_type !== 'None' &&  (
+      <>
+        <div className="bg-white p-4 rounded-lg border border-slate-200">
+          <h4 className="text-sm font-medium text-slate-600 mb-2">
+            {dictionary.fallacyType || "Fallacy Type"}
+          </h4>
+          <p className="text-slate-700 font-semibold">
+            {currentFallacy.fallacy_type}
+          </p>
+        </div>
+        <div>
+          <h4 className="text-sm font-medium text-slate-600 mb-1">
+            {dictionary.correctedArgument}
+          </h4>
+          <p className="text-slate-700">
+            {currentFallacy.corrected}
+          </p>
+        </div>
+      </>
+    )}
     </div>
   </div>
 );

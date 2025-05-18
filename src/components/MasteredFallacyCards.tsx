@@ -32,7 +32,7 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
         {dictionary.masteryDashboard.achievements}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {Object.keys(fallacyMasteries).map((fallacy, index) => {
+        {Object.keys(fallacyMasteries).filter(el => el !== 'None').map((fallacy, index) => {
           const masteryCount = fallacyMasteries[fallacy];
           const isMastered = masteryCount >= MASERY_COUNT;
           const isLocked = masteryCount === 0;

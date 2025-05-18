@@ -36,6 +36,7 @@ Provide:
 
 Fallacy information for context:
 "${fallacyExample}"
+${fallacyType === 'None' && "This statement has no logic fallacy, so user must correctly guess that statemnt is valid and has no logic fallacy"} 
 `
 
     const evaluationPrompt = ChatPromptTemplate.fromMessages([
