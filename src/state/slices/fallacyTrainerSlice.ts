@@ -16,13 +16,17 @@ const initialState: FallacyTrainerState = {
   fallacyMasteries: {},
   showMasteryDialog: false,
   sessionActivity: [],
+  questionsInSession: 0,
+  isSessionComplete: false,
+  showSessionResults: false,
   currentSession: {
     startTime: null,
     points: 0,
   },
 };
 
-export const MASERY_COUNT = 3
+export const MASERY_COUNT = 3;
+export const QUESTIONS_IN_SESSION = 3;
 
 export const fallacyTrainerSlice = createSlice({
   name: "fallacyTrainer",
@@ -87,7 +91,7 @@ export const fallacyTrainerSlice = createSlice({
       }
       state.fallacyMasteries[fallacyType] += 1;
 
-      if (state.fallacyMasteries[fallacyType] == MASERY_COUNT) {
+      if (state.fallacyMasteries[fallacyType] === MASERY_COUNT) {
         state.showMasteryDialog = true;
       }
     },
@@ -103,6 +107,20 @@ export const fallacyTrainerSlice = createSlice({
     hideMasteryDialog(state) {
       state.showMasteryDialog = false;
     },
+    incrementQuestionsInSession(state) {
+      state.questionsInSession += 1;
+      if (state.questionsInSession > QUESTIONS_IN_SESSION) {
+        state.isSessionComplete = true;
+      }
+    },
+    resetSession(state) {
+      state.questionsInSession = 1;
+      state.isSessionComplete = false;
+      state.showSessionResults = false;
+    },
+    showResults(state) {
+      state.showSessionResults = true;
+    },
     endCurrentSession(state) {
       if (state.currentSession?.startTime) {
         const startTime = new Date(state.currentSession.startTime);
@@ -116,12 +134,13 @@ export const fallacyTrainerSlice = createSlice({
           points: state.currentSession.points,
         };
         
-        // Keep last 10 sessions for history
         state.sessionActivity = [newActivity, ...(state.sessionActivity || [])];
         
         // Reset current session
         state.currentSession.startTime = null;
         state.currentSession.points = 0;
+        state.questionsInSession = 0;
+        state.isSessionComplete = false;
       }
     },
     hydrateState(state, action: PayloadAction<FallacyTrainerState>) {
@@ -148,6 +167,9 @@ export const {
   resetAnswerState,
   showMasteryDialog,
   hideMasteryDialog,
+  incrementQuestionsInSession,
+  resetSession,
+  showResults,
   endCurrentSession,
   hydrateState,
 } = fallacyTrainerSlice.actions;

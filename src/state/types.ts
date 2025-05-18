@@ -20,6 +20,9 @@ export interface FallacyTrainerState {
   fallacyMasteries: {[type: string]: number};
   showMasteryDialog: boolean;
   sessionActivity: SessionActivity[];
+  questionsInSession: number;
+  isSessionComplete: boolean;
+  showSessionResults: boolean;
   currentSession?: {
     startTime: string | null; // ISO string
     points: number;

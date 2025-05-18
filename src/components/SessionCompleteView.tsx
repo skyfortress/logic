@@ -1,0 +1,136 @@
+import { FC, useEffect, useState } from 'react';
+import ConfettiExplosion from "react-confetti-blast";
+import type { Dictionary } from './types';
+import Button from './Button';
+
+interface SessionCompleteViewProps {
+  score: number;
+  dictionary: Dictionary;
+  onStartNewSession: () => void;
+  correctPercentage?: number;
+}
+
+const SessionCompleteView: FC<SessionCompleteViewProps> = ({
+  score,
+  dictionary,
+  onStartNewSession,
+  correctPercentage = 0
+}) => {
+  const [displayScore, setDisplayScore] = useState(0);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0
+  });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    if (typeof window !== 'undefined') {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+      window.addEventListener('resize', handleResize);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (score > 0) {
+      const animationDuration = 1500;
+      const framesPerSecond = 60;
+      const incrementsCount = animationDuration / 1000 * framesPerSecond;
+      const scoreIncrement = score / incrementsCount;
+      let currentCount = 0;
+      
+      const timer = setInterval(() => {
+        currentCount += scoreIncrement;
+        if (currentCount >= score) {
+          setDisplayScore(score);
+          clearInterval(timer);
+        } else {
+          setDisplayScore(Math.floor(currentCount));
+        }
+      }, 1000 / framesPerSecond);
+      
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [score]);
+
+  const confettiProps = {
+    force: 0.6,
+    duration: 5000,
+    particleCount: 200,
+    width: windowSize.width,
+    height: windowSize.height,
+    zIndex: 1000
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8 relative">
+      <div style={{  
+        position: "absolute",
+        right: "50%",
+        left: "50%",
+        top: "35%"
+      }}>
+        <ConfettiExplosion {...confettiProps} />
+      </div>
+      
+      <div className="text-center">
+        <div className="bg-blue-50 p-5 rounded-xl border-l-4 border-blue-400 mb-6">
+          <h2 className="text-2xl font-bold text-sky-800 mb-2">{dictionary.sessionComplete}</h2>
+        </div>
+        
+        <div className="mb-8 flex flex-col items-center">
+          <div className="mb-2 text-sm text-slate-600">{dictionary.finalScore}</div>
+          <div className="text-7xl font-bold text-sky-700 mb-6 transition-all duration-100">
+            {displayScore}
+          </div>
+          
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center w-full max-w-xs">
+            <span className="text-sm text-slate-600 mb-1">{dictionary.masteryDashboard.correctPercentage}</span>
+            <span className="text-3xl font-bold text-sky-700">{correctPercentage}%</span>
+          </div>
+        </div>
+        
+        <div className="mb-8">
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+            <div 
+              className="bg-blue-500 h-2.5 rounded-full transition-all duration-1000 ease-out"
+              style={{ width: `${correctPercentage}%` }}
+            ></div>
+          </div>
+          <div className="flex items-center justify-between text-xs text-slate-500">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
+        </div>
+        
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={onStartNewSession}
+          className="mx-auto"
+        >
+          {dictionary.startNewSession}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default SessionCompleteView;

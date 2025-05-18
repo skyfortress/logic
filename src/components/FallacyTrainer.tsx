@@ -9,6 +9,7 @@ import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
 import Footer from '../components/Footer';
 import MasteryDialog from '../components/MasteryDialog';
+import SessionCompleteView from '../components/SessionCompleteView';
 
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { 
@@ -26,10 +27,13 @@ import {
   resetSeenFallacies,
   updateFallacyMastery,
   resetAnswerState,
-  showMasteryDialog,
   hideMasteryDialog,
+  incrementQuestionsInSession,
+  resetSession,
   endCurrentSession,
-  MASERY_COUNT
+  showResults,
+  MASERY_COUNT,
+  QUESTIONS_IN_SESSION
 } from '../state/slices/fallacyTrainerSlice';
 import { FallacyResponse } from '@/pages/api/fallacy';
 import { Fallacy, EvaluationResponse } from '@/pages/api/types';
@@ -50,7 +54,13 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     seenFallacyIds,
     fallacyMasteries,
     showMasteryDialog: isShowingMasteryDialog,
+    questionsInSession,
+    isSessionComplete,
+    showSessionResults,
+    currentSession
   } = useAppSelector(state => state.fallacyTrainer);
+
+  const sessionScore = currentSession?.points || 0;
 
   const isFallacyMastered = (fallacyType: string): boolean => {
     return (fallacyMasteries[fallacyType] || 0) >= MASERY_COUNT;
@@ -149,6 +159,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
         }
 
         dispatch(setShowAnswer(true));
+        dispatch(incrementQuestionsInSession());
       } catch (error) {
         console.error('Error handling next:', error);
       }
@@ -156,12 +167,28 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   }, [userInput, currentFallacy, evaluateAnswer, dispatch]);
 
   const handleSkip = useCallback(() => {
-    loadNextFallacy();
-  }, [loadNextFallacy]);
+    if (questionsInSession >= QUESTIONS_IN_SESSION - 1) {
+      dispatch(incrementQuestionsInSession());
+    } else {
+      loadNextFallacy();
+      dispatch(incrementQuestionsInSession());
+    }
+  }, [loadNextFallacy, dispatch, questionsInSession]);
 
   const handleCloseMasteryDialog = useCallback(() => {
     dispatch(hideMasteryDialog());
   }, [dispatch]);
+  
+  const handleStartNewSession = useCallback(() => {
+    dispatch(resetSession());
+    fetchNextFallacy(true);
+  }, [dispatch, fetchNextFallacy]);
+
+  const handleShowResults = useCallback(() => {
+    dispatch(showResults());
+  }, [dispatch]);
+
+  const isLastQuestionInSession = questionsInSession === QUESTIONS_IN_SESSION;
 
   useEffect(() => {
     loadNextFallacy();
@@ -207,22 +234,31 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   }, [dispatch]);
 
   return (<>
-        <Header dictionary={dictionary} lang={lang} />
-        
-        {currentFallacy && (
+        {showSessionResults ? (
+          <SessionCompleteView
+            score={sessionScore}
+            dictionary={dictionary}
+            onStartNewSession={handleStartNewSession}
+            correctPercentage={questionsInSession > 0 ? 
+              Math.round((currentSession?.points || 0) / questionsInSession) : 0}
+          />
+        ) : currentFallacy && (
           <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
             <div className="mb-8">
               <StatusBar 
-                score={score}
+                score={sessionScore}
                 dictionary={dictionary}
                 streak={streak}
+                questionsInSession={questionsInSession}
               />
 
-              <FallacyQuestion 
-                fallacy={currentFallacy}
-                isMastered={currentFallacy ? isFallacyMastered(currentFallacy.fallacy_type) : false} 
-                dictionary={dictionary}
-              />
+              <div className="mb-4">
+                <FallacyQuestion 
+                  fallacy={currentFallacy}
+                  isMastered={currentFallacy ? isFallacyMastered(currentFallacy.fallacy_type) : false} 
+                  dictionary={dictionary}
+                />
+              </div>
 
               <div className="space-y-6">
                 <UserInput 
@@ -237,10 +273,12 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                   handleNext={handleNext}
                   loadNextFallacy={loadNextFallacy}
                   handleSkip={handleSkip}
+                  handleShowResults={handleShowResults}
                   userInput={userInput}
                   dictionary={dictionary}
                   isLoadingFallacy={isLoadingFallacy}
                   isEvaluating={isEvaluating}
+                  isLastQuestionInSession={isLastQuestionInSession}
                 />
               </div>
             </div>
@@ -256,9 +294,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
             )}
           </div>
         )}
-        
-        <Footer dictionary={dictionary} />
-
         {isShowingMasteryDialog && (
           <MasteryDialog
             onClose={handleCloseMasteryDialog}

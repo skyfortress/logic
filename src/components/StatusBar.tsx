@@ -1,14 +1,17 @@
 import React from 'react';
 import { Dictionary } from './types';
+import { QUESTIONS_IN_SESSION } from '@/state/slices/fallacyTrainerSlice';
 
 const StatusBar = ({ 
   score, 
   dictionary,
-  streak = 0
+  streak = 0,
+  questionsInSession = 0
 }: { 
   score: number;
   dictionary: Dictionary;
   streak?: number;
+  questionsInSession?: number;
 }) => {
   const showStreakIndicator = streak >= 5;
   
@@ -18,6 +21,9 @@ const StatusBar = ({
         {dictionary.identifyFallacy}
       </h2>
       <div className="flex items-center gap-4">
+        <div className="text-sm bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full border border-indigo-200">
+          {questionsInSession} / {QUESTIONS_IN_SESSION}
+        </div>
         <div className="text-sm bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100">
           {dictionary.score} {score}
         </div>

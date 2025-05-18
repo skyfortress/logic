@@ -2,7 +2,11 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { Locale } from '@/i18n/settings';
 import { getDictionary } from '@/i18n/dictionary';
-import FallacyTrainer from '@/components/FallacyTrainer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import dynamic from 'next/dynamic';
+
+const FallacyTrainer = dynamic(() => import('@/components/FallacyTrainer'), { ssr: false });
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const lang = params?.lang as Locale;
@@ -28,7 +32,9 @@ export default function Home({ lang, dictionary }: {
       </Head>
       
       <div className="container mx-auto px-4">
+        <Header dictionary={dictionary} lang={lang} />
         <FallacyTrainer lang={lang} dictionary={dictionary} />
+        <Footer dictionary={dictionary} />
       </div>
     </>
   );

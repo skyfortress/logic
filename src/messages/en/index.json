@@ -25,6 +25,10 @@
   "masteryAchieved": "Mastery Achieved!",
   "masteryMessage": "You've mastered the {fallacyName} fallacy. Congratulations!",
   "continue": "Continue",
+  "sessionComplete": "Session Complete!",
+  "finalScore": "Your final score",
+  "startNewSession": "Start New Session",
+  "showResults": "Show Results",
   "fallaciesList": {
     "title": "Fallacy Library",
     "description": "Explore and learn the tricks behind faulty reasoning.",
@@ -66,7 +70,7 @@
     "correctAnswers": "Correct Answers",
     "incorrectAnswers": "Wrong Answers",
     "correctPercentage": "Percentage Correct",
-    "performanceStats": "Performance Statistics",
+        "performanceStats": "Performance Statistics",
     "sessionActivity": {
       "lastSession": "Last session:",
       "duration": "Duration:",
