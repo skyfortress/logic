@@ -13,12 +13,12 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
 
   if (Object.keys(fallacyMasteries).length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-        <h2 className="font-bold text-xl text-sky-700 mb-4">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-200">
+        <h2 className="font-bold text-lg sm:text-xl text-sky-700 mb-3 sm:mb-4">
           {dictionary.masteryDashboard.achievements}
         </h2>
-        <div className="flex justify-center items-center h-32">
-          <p className="text-gray-500 text-center">
+        <div className="flex justify-center items-center h-24 sm:h-32">
+          <p className="text-gray-500 text-sm sm:text-base text-center">
             {dictionary.masteryDashboard.noAchievements}
           </p>
         </div>
@@ -27,11 +27,11 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-      <h2 className="font-bold text-xl text-sky-700 mb-4">
+    <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-200">
+      <h2 className="font-bold text-lg sm:text-xl text-sky-700 mb-3 sm:mb-4">
         {dictionary.masteryDashboard.achievements}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         {Object.keys(fallacyMasteries).filter(el => el !== 'None').map((fallacy, index) => {
           const masteryCount = fallacyMasteries[fallacy];
           const isMastered = masteryCount >= MASERY_COUNT;
@@ -59,21 +59,21 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
               {isLocked && (
                 <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-10">
                   <div className="text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                    <p className="text-sm mt-2 text-gray-500">{dictionary.masteryDashboard.locked}</p>
+                    <p className="text-xs sm:text-sm mt-2 text-gray-500">{dictionary.masteryDashboard.locked}</p>
                   </div>
                 </div>
               )}
               
-              <div className="p-4">
-                <h3 className={`font-bold text-lg mb-1 ${isMastered ? 'text-emerald-700' : 'text-gray-800'}`}>
+              <div className="p-3 sm:p-4">
+                <h3 className={`font-bold text-base sm:text-lg mb-1 ${isMastered ? 'text-emerald-700' : 'text-gray-800'}`}>
                   {fallacy}
                 </h3>
                 
-                <div className="mt-3">
-                  <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div className="mt-2 sm:mt-3">
+                  <div className="h-1.5 sm:h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                     <div 
                       className={`h-full rounded-full ${
                         isMastered ? 'bg-emerald-500' : 'bg-sky-600'
@@ -86,16 +86,16 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
                   </div>
                   
                   <div className="flex justify-between items-center mt-1">
-                    <span className="text-xs font-medium text-gray-500">
+                    <span className="text-[10px] sm:text-xs font-medium text-gray-500">
                       {dictionary.masteryDashboard.progress}: {masteryCount}/{MASERY_COUNT}
                     </span>
                     {!isMastered && !isLocked && (
-                      <span className="text-xs font-medium text-sky-600">
+                      <span className="text-[10px] sm:text-xs font-medium text-sky-600">
                         {dictionary.masteryDashboard.remaining.replace('{count}', String(MASERY_COUNT - masteryCount))}
                       </span>
                     )}
                     {isMastered && (
-                      <span className="text-xs font-medium text-emerald-600">
+                      <span className="text-[10px] sm:text-xs font-medium text-emerald-600">
                         {dictionary.masteryDashboard.completed}
                       </span>
                     )}
@@ -104,7 +104,7 @@ export default function MasteredFallacyCards({ dictionary, lang }: MasteredFalla
                 
                 <div className="flex mt-2">
                   {[...Array(MASERY_COUNT)].map((_, i) => (
-                    <svg key={i} xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${
+                    <svg key={i} xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 sm:h-5 sm:w-5 ${
                       i < masteryCount 
                         ? isMastered ? 'text-emerald-500' : 'text-sky-500' 
                         : 'text-gray-300'

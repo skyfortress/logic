@@ -25,11 +25,11 @@ export function OverallProgress({ masteryDashboard }: OverallProgressProps) {
   const correctPercentage = seenCount > 0 ? Math.round((correctAnswers / seenCount) * 100) : 0;
   
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="font-semibold text-lg text-sky-800 mb-4">
+    <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+      <h2 className="font-semibold text-base sm:text-lg text-sky-800 mb-3 sm:mb-4">
         {masteryDashboard.overallProgress}
       </h2>
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         <StatItem 
           label={masteryDashboard.masteredFallacies}
           value={masteredCount}
@@ -50,15 +50,15 @@ export function OverallProgress({ masteryDashboard }: OverallProgressProps) {
           value={incorrectAnswers}
         />
         
-        <div className="mt-5 pt-4 border-t border-gray-100">
-          <div className="space-y-2">
+        <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-gray-100">
+          <div className="space-y-1 sm:space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-gray-700">{masteryDashboard.correctPercentage}</span>
+              <span className="text-sm sm:text-base text-gray-700">{masteryDashboard.correctPercentage}</span>
               <span className="font-mono font-semibold text-sky-700">{correctPercentage}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
               <div 
-                className="bg-gradient-to-r from-sky-500 to-indigo-600 h-2 rounded-full transition-all duration-500 ease-in-out" 
+                className="bg-gradient-to-r from-sky-500 to-indigo-600 h-1.5 sm:h-2 rounded-full transition-all duration-500 ease-in-out" 
                 style={{ width: `${Math.min(100, Math.max(0, correctPercentage))}%` }}
               ></div>
             </div>
@@ -77,8 +77,8 @@ interface StatItemProps {
 function StatItem({ label, value }: StatItemProps) {
   return (
     <div className="flex justify-between items-center">
-      <span className="text-gray-700">{label}</span>
-      <span className="font-mono">{value}</span>
+      <span className="text-sm sm:text-base text-gray-700">{label}</span>
+      <span className="font-mono text-sm sm:text-base">{value}</span>
     </div>
   );
 }

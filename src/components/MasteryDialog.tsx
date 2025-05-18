@@ -49,7 +49,7 @@ export default function MasteryDialog({ onClose, fallacyType, dictionary }: Mast
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 `}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={onClose}
     >
       <div style={{  
@@ -59,18 +59,21 @@ export default function MasteryDialog({ onClose, fallacyType, dictionary }: Mast
         top: "35%"
       }}><ConfettiExplosion {...bigExplodeProps} /></div>
       <div 
-        className="bg-white rounded-xl p-6 m-4 max-w-sm w-full shadow-md transform transition-transform"
+        className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 m-3 sm:m-4 max-w-sm w-full shadow-md transform transition-transform"
         onClick={e => e.stopPropagation()}
       >
         <div className="text-center">
-          <div className="text-5xl mb-4">🏆</div>
-          <h2 className="text-2xl font-bold mb-2">{dictionary.masteryAchieved}</h2>
-          <p className="text-lg mb-4 text-slate-700">
+          <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🏆</div>
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">
+            {dictionary.masteryAchieved}
+          </h2>
+          <p className="text-base sm:text-lg mb-4 text-slate-700">
             {dictionary.masteryMessage.replace('{fallacyName}', fallacyType)}
           </p>
           <Button
             variant="primary"
             onClick={onClose}
+            className="w-full sm:w-auto"
           >
             {dictionary.continue}
           </Button>

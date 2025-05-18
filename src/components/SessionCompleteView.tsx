@@ -79,7 +79,7 @@ const SessionCompleteView: FC<SessionCompleteViewProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8 relative">
+    <div className="bg-white rounded-lg sm:rounded-2xl shadow-md border border-slate-100 p-4 sm:p-6 md:p-8 relative">
       <div style={{  
         position: "absolute",
         right: "50%",
@@ -90,26 +90,26 @@ const SessionCompleteView: FC<SessionCompleteViewProps> = ({
       </div>
       
       <div className="text-center">
-        <div className="bg-blue-50 p-5 rounded-xl border-l-4 border-blue-400 mb-6">
-          <h2 className="text-2xl font-bold text-sky-800 mb-2">{dictionary.sessionComplete}</h2>
+        <div className="bg-blue-50 p-3 sm:p-5 rounded-lg sm:rounded-xl border-l-4 border-blue-400 mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-sky-800 mb-1 sm:mb-2">{dictionary.sessionComplete}</h2>
         </div>
         
-        <div className="mb-8 flex flex-col items-center">
-          <div className="mb-2 text-sm text-slate-600">{dictionary.finalScore}</div>
-          <div className="text-7xl font-bold text-sky-700 mb-6 transition-all duration-100">
+        <div className="mb-6 sm:mb-8 flex flex-col items-center">
+          <div className="mb-1 sm:mb-2 text-xs sm:text-sm text-slate-600">{dictionary.finalScore}</div>
+          <div className="text-5xl sm:text-7xl font-bold text-sky-700 mb-4 sm:mb-6 transition-all duration-100">
             {displayScore}
           </div>
           
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col items-center w-full max-w-xs">
-            <span className="text-sm text-slate-600 mb-1">{dictionary.masteryDashboard.correctPercentage}</span>
-            <span className="text-3xl font-bold text-sky-700">{correctPercentage}%</span>
+          <div className="bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-100 flex flex-col items-center w-full max-w-xs">
+            <span className="text-xs sm:text-sm text-slate-600 mb-1">{dictionary.masteryDashboard.correctPercentage}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-sky-700">{correctPercentage}%</span>
           </div>
         </div>
         
-        <div className="mb-8">
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+        <div className="mb-6 sm:mb-8 px-1">
+          <div className="w-full bg-gray-200 rounded-full h-2 sm:h-2.5 mb-2">
             <div 
-              className="bg-blue-500 h-2.5 rounded-full transition-all duration-1000 ease-out"
+              className="bg-blue-500 h-2 sm:h-2.5 rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${correctPercentage}%` }}
             ></div>
           </div>
@@ -124,7 +124,7 @@ const SessionCompleteView: FC<SessionCompleteViewProps> = ({
           variant="primary"
           size="lg"
           onClick={onStartNewSession}
-          className="mx-auto"
+          className="mx-auto w-full sm:w-auto"
         >
           {dictionary.startNewSession}
         </Button>

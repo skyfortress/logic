@@ -31,11 +31,9 @@ export default function Home({ lang, dictionary }: {
         <meta name="description" content={dictionary.metadata.rootDescription} />
       </Head>
       
-      <div className="container mx-auto px-4">
         <Header dictionary={dictionary} lang={lang} />
         <FallacyTrainer lang={lang} dictionary={dictionary} />
         <Footer dictionary={dictionary} />
-      </div>
     </>
   );
 }

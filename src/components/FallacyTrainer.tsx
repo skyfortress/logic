@@ -243,8 +243,8 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
               Math.round((currentSession?.points || 0) / questionsInSession) : 0}
           />
         ) : currentFallacy && (
-          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8">
-            <div className="mb-8">
+          <div className="bg-white rounded-lg sm:rounded-2xl shadow-md border border-slate-100 p-4 sm:p-6 md:p-8">
+            <div className="mb-6 sm:mb-8">
               <StatusBar 
                 score={sessionScore}
                 dictionary={dictionary}
@@ -252,7 +252,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                 questionsInSession={questionsInSession}
               />
 
-              <div className="mb-4">
+              <div className="mb-3 sm:mb-4">
                 <FallacyQuestion 
                   fallacy={currentFallacy}
                   isMastered={currentFallacy ? isFallacyMastered(currentFallacy.fallacy_type) : false} 
@@ -260,7 +260,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
                 />
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <UserInput 
                   userInput={userInput}
                   setUserInput={handleInputChange}
