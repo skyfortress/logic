@@ -26,7 +26,7 @@ const initialState: FallacyTrainerState = {
 };
 
 export const MASERY_COUNT = 3;
-export const QUESTIONS_IN_SESSION = 10;
+export const QUESTIONS_IN_SESSION = 5;
 
 export const fallacyTrainerSlice = createSlice({
   name: "fallacyTrainer",
@@ -114,7 +114,7 @@ export const fallacyTrainerSlice = createSlice({
       }
     },
     resetSession(state) {
-      state.questionsInSession = 1;
+      state.questionsInSession = 0;
       state.isSessionComplete = false;
       state.showSessionResults = false;
     },

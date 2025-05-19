@@ -13,6 +13,7 @@ export interface EvaluationRequest {
 export const EvaluationResponseSchema = z.object({
   isCorrect: z.boolean(),
   explanation: z.string(),
+  corrected: z.string().describe('Corrected statement'),
   score: z.number().int().min(0).max(100)
 });
 

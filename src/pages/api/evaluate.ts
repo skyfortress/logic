@@ -75,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 You evaluate if players correctly identify logical fallacies in statements, but you're not too strict - this is a game meant to be fun and educational.
 You MUST respond in the language specified by the user (${language}).
 Evaluate the player's answer with these guidelines:
-0. Evaluate whether player's answer is correct in general and is it applicable to the fallacy example.
+0. Evaluate whether player's answer is correct in general and is it applicable to the fallacy excercise.
 1. Be generous - if they got the general idea, count it as correct even if imprecise
 2. Award partial credit for attempts that show understanding but miss some details
 3. Be encouraging even when they're wrong
@@ -84,10 +84,12 @@ Provide:
 1. A binary decision: Is the player's answer generally correct? (true if they understood the core issue)
 2. A brief, friendly explanation with a touch of humor (2-3 sentences) IN THE ${language} LANGUAGE
 3. A score from 0-100, being generous (60+ for attempts that show basic understanding), but give 0 for empty responses
+4. Same statement, but corrected to not have logical fallacy
 
 Fallacy information for context:
-"${fallacyExample}"
+Excercise: "${fallacyExample}" 
 ${fallacyType === 'None' && "This statement has no logic fallacy, so user must correctly guess that statemnt is valid and has no logic fallacy"} 
+Fallacy type: ${fallacyType}
 `
 
     const evaluationPrompt = ChatPromptTemplate.fromMessages([
@@ -108,6 +110,7 @@ ${fallacyType === 'None' && "This statement has no logic fallacy, so user must c
       console.log(error);
       const fallbackEvaluation: EvaluationResponse = {
         isCorrect: false,
+        corrected: '',
         explanation: language === 'en' ? 
           "Oops! Our logic circuits got tangled. Give it another shot - even Aristotle had off days!" : 
           "Ой! Наші логічні схеми заплутались. Спробуйте ще раз - навіть Аристотель мав погані дні!",

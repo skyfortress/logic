@@ -7,7 +7,6 @@ import UserInput from '../components/UserInput';
 import FallacyControls from '../components/FallacyControls';
 import StatusBar from '../components/StatusBar';
 import FallacyResult from '../components/FallacyResult';
-import Footer from '../components/Footer';
 import MasteryDialog from '../components/MasteryDialog';
 import SessionCompleteView from '../components/SessionCompleteView';
 
@@ -63,7 +62,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   const sessionScore = currentSession?.points || 0;
 
   const isFallacyMastered = (fallacyType: string): boolean => {
-    return (fallacyMasteries[fallacyType] || 0) >= MASERY_COUNT;
+    return (fallacyMasteries[fallacyType] || 0) >= MASERY_COUNT && fallacyType !== 'None';
   }
 
   const fetchNextFallacy = useCallback(async (forceReset = false) => {
@@ -135,6 +134,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       return {
         isCorrect: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase(),
         explanation: '',
+        corrected: '',
         score: input.trim().toLowerCase() === fallacy.fallacy_type.toLowerCase() ? 100 : 0
       };
     } finally {
@@ -181,6 +181,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   
   const handleStartNewSession = useCallback(() => {
     dispatch(resetSession());
+    dispatch(resetAnswerState());
     fetchNextFallacy(true);
   }, [dispatch, fetchNextFallacy]);
 
@@ -239,8 +240,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
             score={sessionScore}
             dictionary={dictionary}
             onStartNewSession={handleStartNewSession}
-            correctPercentage={questionsInSession > 0 ? 
-              Math.round((currentSession?.points || 0) / questionsInSession * 100) : 0}
+            correctPercentage={Math.round(sessionScore / (QUESTIONS_IN_SESSION * 100) * 100)}
           />
         ) : currentFallacy && (
           <div className="bg-white rounded-lg sm:rounded-2xl shadow-md border border-slate-100 p-4 sm:p-6 md:p-8">

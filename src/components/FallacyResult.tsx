@@ -80,7 +80,7 @@ const FallacyResult = ({
             {dictionary.correctedArgument}
           </h4>
           <p className="text-slate-700 text-sm sm:text-base">
-            {currentFallacy.corrected}
+            {evaluation?.corrected}
           </p>
         </div>
       </>
