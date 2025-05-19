@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import ConfettiExplosion from "react-confetti-blast";
 import type { Dictionary } from './types';
 import Button from './Button';
+import ShareButtons from './ShareButtons';
+import { QUESTIONS_IN_SESSION } from '@/state/slices/fallacyTrainerSlice';
 
 interface SessionCompleteViewProps {
   score: number;
@@ -120,14 +122,26 @@ const SessionCompleteView: FC<SessionCompleteViewProps> = ({
           </div>
         </div>
         
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={onStartNewSession}
-          className="mx-auto w-full sm:w-auto"
-        >
-          {dictionary.startNewSession}
-        </Button>
+        <div className="flex flex-col gap-4 sm:gap-6 items-center">
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={onStartNewSession}
+            className="mx-auto w-full sm:w-auto"
+          >
+            {dictionary.startNewSession}
+          </Button>
+          
+          <div className="mt-2 pt-4 border-t border-slate-100 w-full">
+            <ShareButtons 
+              score={score} 
+              message={dictionary.shareMessage}
+              url={typeof window !== 'undefined' ? window.location.href : ''}
+              total={QUESTIONS_IN_SESSION * 100}
+              percentage={correctPercentage}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

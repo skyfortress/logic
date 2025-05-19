@@ -240,7 +240,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
             dictionary={dictionary}
             onStartNewSession={handleStartNewSession}
             correctPercentage={questionsInSession > 0 ? 
-              Math.round((currentSession?.points || 0) / questionsInSession) : 0}
+              Math.round((currentSession?.points || 0) / questionsInSession * 100) : 0}
           />
         ) : currentFallacy && (
           <div className="bg-white rounded-lg sm:rounded-2xl shadow-md border border-slate-100 p-4 sm:p-6 md:p-8">

@@ -29,6 +29,8 @@
   "finalScore": "Your final score",
   "startNewSession": "Start New Session",
   "showResults": "Show Results",
+  "shareYourScore": "Share your achievement",
+  "shareMessage": "🧠 I completed the Logical Fallacy Trainer!\n\nScore: {score} of {total} ({percentage} %) 🎯  \nMastered fallacies: {mastered} 🏆\n\nTest yourself: can you do better?  \n👉 ",
   "fallaciesList": {
     "title": "Fallacy Library",
     "description": "Explore and learn the tricks behind faulty reasoning.",
@@ -70,7 +72,7 @@
     "correctAnswers": "Correct Answers",
     "incorrectAnswers": "Wrong Answers",
     "correctPercentage": "Percentage Correct",
-        "performanceStats": "Performance Statistics",
+    "performanceStats": "Performance Statistics",
     "sessionActivity": {
       "lastSession": "Last session:",
       "duration": "Duration:",
