@@ -192,7 +192,11 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   const isLastQuestionInSession = questionsInSession === QUESTIONS_IN_SESSION;
 
   useEffect(() => {
-    loadNextFallacy();
+    if (showSessionResults) {
+      handleStartNewSession();
+    } else {
+      loadNextFallacy();
+    }
     
     return () => {
       dispatch(endCurrentSession());
