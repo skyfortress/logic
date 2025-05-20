@@ -5,7 +5,9 @@ import Script from "next/script";
 export default function Document() {
   return (
     <Html lang="en">
-      <Head />
+      <Head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </Head>
       <body className={`antialiased`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-HN93HGTBLX"
