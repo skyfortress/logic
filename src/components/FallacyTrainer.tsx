@@ -65,15 +65,12 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
     return (fallacyMasteries[fallacyType] || 0) >= MASERY_COUNT && fallacyType !== 'None';
   }
 
-  const fetchNextFallacy = useCallback(async (forceReset = false) => {
+  const fetchNextFallacy = useCallback(async () => {
     try {
       dispatch(setLoadingFallacy(true));
       
-      if (forceReset) {
-        dispatch(resetSeenFallacies());
-      }
       
-      const excludeParam = seenFallacyIds.length > 0 && !forceReset ? `exclude=${seenFallacyIds.join(',')}` : '';
+      const excludeParam = seenFallacyIds.length > 0 ? `exclude=${seenFallacyIds.join(',')}` : '';
       const langParam = `lang=${lang}`;
       const queryString = [excludeParam, langParam].filter(Boolean).join('&');
       const response = await fetch(`/api/fallacy${queryString ? `?${queryString}` : ''}`);
@@ -87,10 +84,6 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
       if (data.fallacy) {
         dispatch(setCurrentFallacy(data.fallacy));
         dispatch(addSeenFallacy(data.fallacy.id.toString()));
-      } else if (!forceReset) {
-        fetchNextFallacy(true);
-      } else {
-        console.error('No fallacies available after reset');
       }
     } catch (error) {
       console.error('Error fetching fallacy:', error);
@@ -100,7 +93,7 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   }, [seenFallacyIds, lang, dispatch]);
 
   const loadNextFallacy = useCallback(() => {
-    fetchNextFallacy(false);
+    fetchNextFallacy();
     dispatch(resetAnswerState());
   }, [fetchNextFallacy, dispatch]);
 
@@ -180,9 +173,10 @@ export default function FallacyTrainer({ dictionary, lang }: { dictionary: Dicti
   }, [dispatch]);
   
   const handleStartNewSession = useCallback(() => {
+    dispatch(endCurrentSession());
     dispatch(resetSession());
     dispatch(resetAnswerState());
-    fetchNextFallacy(true);
+    fetchNextFallacy();
   }, [dispatch, fetchNextFallacy]);
 
   const handleShowResults = useCallback(() => {

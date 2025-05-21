@@ -73,7 +73,7 @@ export default function MasteryDialog({ onClose, fallacyType, dictionary }: Mast
           <Button
             variant="primary"
             onClick={onClose}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto mx-auto"
           >
             {dictionary.continue}
           </Button>

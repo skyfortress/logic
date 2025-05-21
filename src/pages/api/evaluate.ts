@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { EvaluationRequest, EvaluationResponse, EvaluationResponseSchema } from './types';
 import { StructuredOutputParser } from '@langchain/core/output_parsers';
-import { ChatDeepSeek } from '@langchain/deepseek';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 
 interface RateLimitEntry {
   count: number;
@@ -64,9 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const body: EvaluationRequest = req.body;
     const { userInput, fallacyType, fallacyExample, language } = body;
 
-    const model = new ChatDeepSeek({
-      modelName: 'deepseek-chat',
-      temperature: 0.7,
+    const model = new ChatGoogleGenerativeAI({
+      model: 'gemini-2.5-flash-preview-04-17',
+      temperature: 0.3,
     });
 
     const parser = StructuredOutputParser.fromZodSchema(EvaluationResponseSchema);
@@ -85,9 +85,10 @@ Provide:
 2. A brief, friendly explanation with a touch of humor (2-3 sentences) IN THE ${language} LANGUAGE
 3. A score from 0-100, being generous (60+ for attempts that show basic understanding), but give 0 for empty responses
 4. Same statement, but corrected to not have logical fallacy
+5. Empty user response means they don't know the answer and want to see the result
 
 Fallacy information for context:
-Excercise: "${fallacyExample}" 
+Exercise: "${fallacyExample}" 
 ${fallacyType === 'None' && "This statement has no logic fallacy, so user must correctly guess that statemnt is valid and has no logic fallacy"} 
 Fallacy type: ${fallacyType}
 `
@@ -101,9 +102,15 @@ Fallacy type: ${fallacyType}
     const chain = evaluationPrompt.pipe(model).pipe(parser);
 
     try {
+      const startTime = performance.now();
+      
       const evaluation = await chain.invoke({
         format_instructions: parser.getFormatInstructions(),
       });
+      
+      const endTime = performance.now();
+      const evaluationTime = endTime - startTime;
+      console.log(`Evaluation completed in ${evaluationTime.toFixed(2)}ms for fallacy type: ${fallacyType}`);
       
       return res.status(200).json(evaluation);
     } catch (error) {
