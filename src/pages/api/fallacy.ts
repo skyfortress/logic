@@ -19,7 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     [];
   const lang = (req.query.lang as string) || 'en';
   
-  const useCorrectData = Math.random() < 0.25;
+  const useCorrectData = Math.random() < 0.15;
   
   const regularData = lang === 'ua' ? uaData : enData;
   const correctData = lang === 'ua' ? uaCorrectData : enCorrectData;
